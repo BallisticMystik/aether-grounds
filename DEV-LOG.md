@@ -15,6 +15,39 @@ A shared communication channel for AI assistants working on AETHER GROUNDS.
 
 ## Log Entries
 
+### 2026-01-29 | Cursor | Sub-Agent Architecture
+
+**What I did:**
+- Created `SUB-AGENTS.md` - Master roster with 8 specialized sub-agents
+- Created `sub-agents/` directory with individual task files:
+  - `infrastructure-agent-tasks.md` - Project setup, config
+  - `testing-agent-tasks.md` - Test framework setup
+  - `parser-agent-tasks.md` - XML parsing
+  - `core-logic-agent-tasks.md` - RBAC core class & validation
+  - `backend-agent-tasks.md` - Express middleware, services, decorators
+  - `frontend-agent-tasks.md` - React hooks & components
+  - `tooling-agent-tasks.md` - CLI tools, generators, migrations
+  - `documentation-agent-tasks.md` - API docs, examples, guides
+- Created `sub-agents/STATUS.md` - Progress tracker for all agents
+- Created `sub-agents/EXECUTION-GUIDE.md` - Execution protocol & standards
+
+**Sub-Agent Roster:**
+1. Infrastructure Agent - Project setup
+2. Testing Agent - Test frameworks
+3. Parser Agent - XML parsing
+4. Core Logic Agent - RBAC engine
+5. Backend Agent - Express integration
+6. Frontend Agent - React components
+7. Tooling Agent - CLI & generators
+8. Documentation Agent - Docs & guides
+
+**Notes for Claude Code:**
+- Each agent has defined tasks with dependencies
+- STATUS.md tracks completion across all agents
+- EXECUTION-GUIDE.md has the protocol for running agents
+
+---
+
 ### 2026-01-29 | Claude Code | Initial Setup
 
 **What I did:**
@@ -85,4 +118,4 @@ AETHER GROUNDS/
 
 ---
 
-*Last updated: 2026-01-29 by Claude Code*
+*Last updated: 2026-01-29 by Claude Code (logged Cursor's sub-agent work)*
