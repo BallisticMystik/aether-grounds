@@ -1,0 +1,284 @@
+{
+  "project": "Coffee Platform RBAC Framework",
+  "version": "1.0",
+  "approach": "TDD",
+  "promptChain": [
+    {
+      "id": "task-1",
+      "title": "Setup Project Structure",
+      "phase": 1,
+      "dependencies": [],
+      "prompt": "Create the project structure for the Coffee Platform RBAC framework. Set up directories: src/core, src/parsers, src/middleware, src/frontend, src/utils, tests/unit, tests/integration, tests/e2e. Create package.json with dependencies: typescript, @types/node, xml2js, express, react, jest/vitest, @testing-library/react. Create tsconfig.json with strict mode enabled. Create .gitignore. All files should be empty placeholders initially.",
+      "expectedOutputs": [
+        "package.json",
+        "tsconfig.json",
+        ".gitignore",
+        "src/core/index.ts",
+        "src/parsers/index.ts",
+        "src/middleware/index.ts",
+        "src/frontend/index.ts",
+        "src/utils/index.ts",
+        "tests/unit/.gitkeep",
+        "tests/integration/.gitkeep",
+        "tests/e2e/.gitkeep"
+      ],
+      "validation": "Verify all directories exist and configuration files are properly formatted"
+    },
+    {
+      "id": "task-2",
+      "title": "Setup Test Framework",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Configure the test framework (use Vitest for Bun compatibility). Create vitest.config.ts with proper test environment setup. Create a test helper file tests/helpers/setup.ts with RBAC test fixtures. Create example test file tests/unit/example.test.ts to verify test setup works. Ensure test scripts are in package.json. Use TDD approach - write tests first, then implementation.",
+      "expectedOutputs": [
+        "vitest.config.ts",
+        "tests/helpers/setup.ts",
+        "tests/helpers/fixtures.ts",
+        "tests/unit/example.test.ts"
+      ],
+      "validation": "Run 'bun test' and verify tests execute successfully"
+    },
+    {
+      "id": "task-3",
+      "title": "Create XML Parser with Tests",
+      "phase": 1,
+      "dependencies": ["task-2"],
+      "prompt": "Using TDD: First write tests in tests/unit/parsers/xml-parser.test.ts that test parsing coffee-platform-roles.xml. Tests should verify: XML structure validation, role extraction, feature extraction, access level parsing, category mapping, error handling for invalid XML. Then implement src/parsers/xml-parser.ts using xml2js to parse the XML file. The parser should return a structured RBACConfig object matching the TypeScript types in types/rbac.types.ts.",
+      "expectedOutputs": [
+        "tests/unit/parsers/xml-parser.test.ts",
+        "src/parsers/xml-parser.ts",
+        "src/parsers/types.ts"
+      ],
+      "validation": "All parser tests pass. Parser correctly extracts all roles, features, and access levels from XML."
+    },
+    {
+      "id": "task-4",
+      "title": "Create Core RBAC Class with Tests",
+      "phase": 1,
+      "dependencies": ["task-3"],
+      "prompt": "Using TDD: First write comprehensive tests in tests/unit/core/rbac.test.ts covering: hasAccess() with all access levels, hasFullAccess(), canWrite(), canRead(), getRoleFeatures(), getFeatureRoles(), getFeaturesByCategory(), error handling for invalid roles/features. Then implement src/core/rbac.ts - the RBAC class from types/rbac.types.ts. Ensure all methods match the interface exactly. Use the parsed XML config as input.",
+      "expectedOutputs": [
+        "tests/unit/core/rbac.test.ts",
+        "src/core/rbac.ts"
+      ],
+      "validation": "All RBAC core tests pass with >95% coverage. All methods work correctly with real XML data."
+    },
+    {
+      "id": "task-5",
+      "title": "Create Config Validator with Tests",
+      "phase": 2,
+      "dependencies": ["task-4"],
+      "prompt": "Using TDD: Write tests in tests/unit/validators/config-validator.test.ts for: validating role structure, validating feature structure, validating access levels, validating categories, detecting missing required fields, detecting invalid enum values. Then implement src/validators/config-validator.ts that validates RBACConfig objects against the JSON schema in schemas/rbac.schema.json. Use ajv or similar for JSON schema validation.",
+      "expectedOutputs": [
+        "tests/unit/validators/config-validator.test.ts",
+        "src/validators/config-validator.ts"
+      ],
+      "validation": "Validator correctly identifies valid and invalid configurations. All validation tests pass."
+    },
+    {
+      "id": "task-6",
+      "title": "Create XML Loader Service",
+      "phase": 2,
+      "dependencies": ["task-5"],
+      "prompt": "Create src/services/rbac-loader.ts that: loads coffee-platform-roles.xml from file system, parses it using xml-parser, validates it using config-validator, returns RBAC instance. Include error handling for file not found, parse errors, validation errors. Create tests in tests/unit/services/rbac-loader.test.ts. Make it a singleton service that can be imported and reused.",
+      "expectedOutputs": [
+        "src/services/rbac-loader.ts",
+        "tests/unit/services/rbac-loader.test.ts"
+      ],
+      "validation": "Loader successfully loads and validates XML. Returns working RBAC instance. All tests pass."
+    },
+    {
+      "id": "task-7",
+      "title": "Create Express Middleware with Tests",
+      "phase": 3,
+      "dependencies": ["task-6"],
+      "prompt": "Using TDD: Write tests in tests/integration/middleware/rbac-middleware.test.ts for Express middleware that: protects routes based on feature and access level, returns 401 for missing auth, returns 403 for insufficient permissions, attaches permission info to request object, handles multiple features with AND/OR logic. Then implement src/middleware/express-rbac.ts with createRBACMiddleware() function. Use the RBAC service from task-6.",
+      "expectedOutputs": [
+        "tests/integration/middleware/rbac-middleware.test.ts",
+        "src/middleware/express-rbac.ts"
+      ],
+      "validation": "Middleware correctly protects routes. All integration tests pass. Works with real Express app."
+    },
+    {
+      "id": "task-8",
+      "title": "Create Permission Decorators",
+      "phase": 3,
+      "dependencies": ["task-7"],
+      "prompt": "Create decorator-based permission system for class methods. Implement src/decorators/rbac.decorator.ts with @RequireFeature() and @RequireAccessLevel() decorators. Write tests in tests/unit/decorators/rbac-decorator.test.ts. Decorators should work with Express route handlers and class methods. Include error handling and permission checking logic.",
+      "expectedOutputs": [
+        "src/decorators/rbac.decorator.ts",
+        "tests/unit/decorators/rbac-decorator.test.ts"
+      ],
+      "validation": "Decorators correctly enforce permissions. Tests pass. Can be used in Express controllers."
+    },
+    {
+      "id": "task-9",
+      "title": "Create RBAC Service Singleton",
+      "phase": 3,
+      "dependencies": ["task-6"],
+      "prompt": "Create src/services/rbac-service.ts as a singleton service that: initializes RBAC from XML on first access, provides getInstance() method, caches the RBAC instance, provides convenience methods for common operations. Write tests in tests/unit/services/rbac-service.test.ts. Ensure thread-safe initialization.",
+      "expectedOutputs": [
+        "src/services/rbac-service.ts",
+        "tests/unit/services/rbac-service.test.ts"
+      ],
+      "validation": "Service correctly initializes and caches RBAC. Singleton pattern works correctly. Tests pass."
+    },
+    {
+      "id": "task-10",
+      "title": "Create React useRBAC Hook",
+      "phase": 4,
+      "dependencies": ["task-9"],
+      "prompt": "Using TDD: Write tests in tests/unit/frontend/useRBAC.test.ts for React hook that: provides permission checking methods, updates when user role changes, handles loading states, provides error handling. Then implement src/frontend/hooks/useRBAC.ts. The hook should accept userRole and return permission checking functions. Use React Testing Library for tests.",
+      "expectedOutputs": [
+        "tests/unit/frontend/useRBAC.test.ts",
+        "src/frontend/hooks/useRBAC.ts"
+      ],
+      "validation": "Hook works correctly in React components. All tests pass. Handles edge cases properly."
+    },
+    {
+      "id": "task-11",
+      "title": "Create useFeatureAccess Hook",
+      "phase": 4,
+      "dependencies": ["task-10"],
+      "prompt": "Create src/frontend/hooks/useFeatureAccess.ts - a specialized hook for checking access to a specific feature. Write tests in tests/unit/frontend/useFeatureAccess.test.ts. Hook should return: canAccess, canRead, canWrite, canFullAccess, accessLevel. Should be optimized for single feature checks.",
+      "expectedOutputs": [
+        "tests/unit/frontend/useFeatureAccess.test.ts",
+        "src/frontend/hooks/useFeatureAccess.ts"
+      ],
+      "validation": "Hook correctly checks feature access. Tests pass. Performance is optimized."
+    },
+    {
+      "id": "task-12",
+      "title": "Create ProtectedRoute Component",
+      "phase": 4,
+      "dependencies": ["task-11"],
+      "prompt": "Create src/frontend/components/ProtectedRoute.tsx - a React component that wraps routes and checks permissions. Write tests in tests/unit/frontend/components/ProtectedRoute.test.ts. Component should: accept featureId and requiredAccessLevel props, render children if access granted, show access denied message if denied, support redirect on denial.",
+      "expectedOutputs": [
+        "tests/unit/frontend/components/ProtectedRoute.test.ts",
+        "src/frontend/components/ProtectedRoute.tsx"
+      ],
+      "validation": "Component correctly protects routes. Tests pass. Works with React Router."
+    },
+    {
+      "id": "task-13",
+      "title": "Create FeatureGate Component",
+      "phase": 4,
+      "dependencies": ["task-12"],
+      "prompt": "Create src/frontend/components/FeatureGate.tsx - a component that conditionally renders children based on feature access. Write tests. Component should: accept featureId and accessLevel props, render children if access granted, render fallback if denied, support multiple access level requirements.",
+      "expectedOutputs": [
+        "tests/unit/frontend/components/FeatureGate.test.ts",
+        "src/frontend/components/FeatureGate.tsx"
+      ],
+      "validation": "Component correctly gates content. Tests pass. Works in various React scenarios."
+    },
+    {
+      "id": "task-14",
+      "title": "Create Config Generator",
+      "phase": 5,
+      "dependencies": ["task-3"],
+      "prompt": "Enhance scripts/generate-rbac-config.ts to: parse XML using xml-parser, generate TypeScript constant file, generate JSON config file, generate type definitions, validate output. Create tests in tests/unit/scripts/generate-rbac-config.test.ts. Add CLI interface using commander or similar.",
+      "expectedOutputs": [
+        "scripts/generate-rbac-config.ts (enhanced)",
+        "tests/unit/scripts/generate-rbac-config.test.ts",
+        "src/cli/generate.ts"
+      ],
+      "validation": "Generator correctly converts XML to TypeScript/JSON. Output is valid and usable. Tests pass."
+    },
+    {
+      "id": "task-15",
+      "title": "Create CLI Tools",
+      "phase": 5,
+      "dependencies": ["task-14"],
+      "prompt": "Create src/cli/index.ts with CLI commands: 'validate' - validate XML config, 'generate' - generate code from XML, 'check' - check permissions for role/feature, 'list' - list all roles/features. Use commander.js. Write tests in tests/integration/cli/cli.test.ts. Add to package.json scripts.",
+      "expectedOutputs": [
+        "src/cli/index.ts",
+        "src/cli/commands/",
+        "tests/integration/cli/cli.test.ts"
+      ],
+      "validation": "CLI commands work correctly. All commands tested. Help text is clear."
+    },
+    {
+      "id": "task-16",
+      "title": "Create Database Migration Scripts",
+      "phase": 5,
+      "dependencies": ["task-3"],
+      "prompt": "Create scripts/database/generate-schema.ts that: reads coffee-platform-roles.xml, generates SQL schema (PostgreSQL/SQLite compatible), creates tables: roles, features, categories, access_levels, role_feature_access, generates seed data from XML. Write tests. Output should be migration-ready SQL files.",
+      "expectedOutputs": [
+        "scripts/database/generate-schema.ts",
+        "scripts/database/schema.sql",
+        "scripts/database/seed.sql",
+        "tests/unit/scripts/database/generate-schema.test.ts"
+      ],
+      "validation": "Generated SQL is valid and executable. Schema matches ERD. Seed data is correct."
+    },
+    {
+      "id": "task-17",
+      "title": "Create API Documentation",
+      "phase": 6,
+      "dependencies": ["task-15"],
+      "prompt": "Generate comprehensive API documentation using TypeDoc or similar. Document: all public classes and methods, all hooks and components, all middleware functions, all CLI commands, usage examples, integration guides. Output to docs/api/. Include JSDoc comments in all source files.",
+      "expectedOutputs": [
+        "docs/api/index.md",
+        "docs/api/core.md",
+        "docs/api/middleware.md",
+        "docs/api/frontend.md",
+        "docs/api/cli.md"
+      ],
+      "validation": "All public APIs documented. Examples are clear. Documentation is complete."
+    },
+    {
+      "id": "task-18",
+      "title": "Create Integration Examples",
+      "phase": 6,
+      "dependencies": ["task-13"],
+      "prompt": "Create complete working examples in examples/: express-api-example.ts - full Express app with protected routes, react-app-example.tsx - React app using hooks and components, nextjs-example.tsx - Next.js integration, bun-api-example.ts - Bun server example. Each should be runnable and demonstrate real-world usage.",
+      "expectedOutputs": [
+        "examples/express-api-example.ts",
+        "examples/react-app-example.tsx",
+        "examples/nextjs-example.tsx",
+        "examples/bun-api-example.ts"
+      ],
+      "validation": "All examples run successfully. They demonstrate proper usage. Code is well-commented."
+    },
+    {
+      "id": "task-19",
+      "title": "Create Migration Guide",
+      "phase": 6,
+      "dependencies": ["task-18"],
+      "prompt": "Write docs/MIGRATION-GUIDE.md with: step-by-step integration instructions, Express.js integration guide, React integration guide, Next.js integration guide, Bun server integration, common pitfalls and solutions, best practices, performance considerations.",
+      "expectedOutputs": [
+        "docs/MIGRATION-GUIDE.md"
+      ],
+      "validation": "Guide is clear and complete. All integration paths covered. Examples are accurate."
+    },
+    {
+      "id": "task-20",
+      "title": "Final Integration Tests",
+      "phase": 6,
+      "dependencies": ["task-19"],
+      "prompt": "Create end-to-end tests in tests/e2e/: full-stack-test.ts - test Express API with React frontend, permission-flow-test.ts - test complete permission checking flow, xml-load-test.ts - test XML loading and initialization, error-handling-test.ts - test error scenarios. Ensure all tests pass and coverage is >90%.",
+      "expectedOutputs": [
+        "tests/e2e/full-stack-test.ts",
+        "tests/e2e/permission-flow-test.ts",
+        "tests/e2e/xml-load-test.ts",
+        "tests/e2e/error-handling-test.ts",
+        "coverage-report.json"
+      ],
+      "validation": "All E2E tests pass. Coverage >90%. No critical bugs found. System is production-ready."
+    }
+  ],
+  "executionOrder": [
+    "task-1", "task-2", "task-3", "task-4", "task-5", "task-6",
+    "task-7", "task-8", "task-9", "task-10", "task-11", "task-12",
+    "task-13", "task-14", "task-15", "task-16", "task-17", "task-18",
+    "task-19", "task-20"
+  ],
+  "notes": {
+    "tdd": "All tasks follow TDD - write tests first, then implementation",
+    "testing": "Use Vitest for Bun compatibility, React Testing Library for frontend",
+    "coverage": "Maintain >90% test coverage throughout",
+    "typescript": "Strict mode enabled, all types must be properly defined",
+    "xmlSource": "All data comes from coffee-platform-roles.xml",
+    "validation": "Each task must pass validation before moving to next"
+  }
+}

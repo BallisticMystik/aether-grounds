@@ -1,0 +1,154 @@
+graph TB
+    subgraph "Coffee Platform RBAC Structure"
+        subgraph "Roles"
+            R1[Farmers<br/>Purple Connection]
+            R2[Roasters/Retailers<br/>Purple Connection]
+            R3[Hubs - Community<br/>Pink Connection]
+            R4[Affiliates/Distributors<br/>Pink Connection]
+        end
+
+        subgraph "Core Features"
+            F1[Profile]
+            F2[Role Dashboard]
+            F3[AetherIQ]
+            F4[Coffee Studio]
+            F5[Shop/Mint]
+            F19[Transactions]
+        end
+
+        subgraph "Farm Operations"
+            F6[Farm Management]
+            F7[IoT Devices]
+        end
+
+        subgraph "Production & Contracts"
+            F8[Smart Contract Wizard]
+            F9[Roast Profile]
+            F10[Roasting Profiler]
+            F11[Roasting Contracts]
+            F18[Blockchain Tools]
+        end
+
+        subgraph "Certification & Traceability"
+            F12[QR Certs]
+            F13[Traceability]
+            F14[Supply Chain]
+        end
+
+        subgraph "Analytics & AI"
+            F15[Analytics]
+            F16[All Farm Analytics]
+            F17[AI Tools]
+        end
+
+        subgraph "Access Levels"
+            AL1[Full Access]
+            AL2[Partial Access]
+            AL3[View Only]
+            AL4[No Access]
+        end
+    end
+
+    %% Farmers Access
+    R1 -->|Full| F1
+    R1 -->|Full| F2
+    R1 -->|Full| F3
+    R1 -->|Full| F4
+    R1 -->|Full| F5
+    R1 -->|Full| F6
+    R1 -->|Full| F7
+    R1 -->|Full| F8
+    R1 -->|Full| F9
+    R1 -->|Full| F12
+    R1 -->|Full| F13
+    R1 -->|Partial| F14
+    R1 -->|Full| F15
+    R1 -->|Full| F16
+    R1 -->|Partial| F17
+    R1 -->|Partial| F18
+    R1 -->|Partial| F11
+    R1 -->|Full| F19
+
+    %% Roasters/Retailers Access
+    R2 -->|Full| F1
+    R2 -->|Full| F2
+    R2 -->|Full| F3
+    R2 -->|Full| F4
+    R2 -->|Full| F5
+    R2 -->|Partial| F6
+    R2 -->|No| F7
+    R2 -->|Full| F8
+    R2 -->|Full| F10
+    R2 -->|Full| F11
+    R2 -->|Full| F12
+    R2 -->|Full| F13
+    R2 -->|Full| F14
+    R2 -->|Full| F15
+    R2 -->|Partial| F16
+    R2 -->|Full| F17
+    R2 -->|Partial| F18
+    R2 -->|Full| F19
+
+    %% Hubs - Community Access
+    R3 -->|Full| F1
+    R3 -->|Full| F2
+    R3 -->|Full| F3
+    R3 -->|Full| F4
+    R3 -->|Full| F5
+    R3 -->|Full| F6
+    R3 -->|Partial| F7
+    R3 -->|Full| F8
+    R3 -->|Partial| F10
+    R3 -->|Full| F11
+    R3 -->|Full| F12
+    R3 -->|Full| F13
+    R3 -->|Full| F14
+    R3 -->|Full| F15
+    R3 -->|Full| F16
+    R3 -->|Full| F17
+    R3 -->|Full| F18
+    R3 -->|Full| F19
+
+    %% Affiliates/Distributors Access
+    R4 -->|Full| F1
+    R4 -->|Full| F2
+    R4 -->|Full| F3
+    R4 -->|Full| F4
+    R4 -->|Full| F5
+    R4 -->|No| F6
+    R4 -->|No| F7
+    R4 -->|Partial| F8
+    R4 -->|No| F10
+    R4 -->|Full| F11
+    R4 -->|Full| F12
+    R4 -->|Full| F13
+    R4 -->|Full| F14
+    R4 -->|No| F15
+    R4 -->|No| F16
+    R4 -->|Full| F17
+    R4 -->|Full| F18
+    R4 -->|No| F19
+
+    style R1 fill:#9b59b6,stroke:#7d3c98,color:#fff
+    style R2 fill:#9b59b6,stroke:#7d3c98,color:#fff
+    style R3 fill:#e91e63,stroke:#c2185b,color:#fff
+    style R4 fill:#e91e63,stroke:#c2185b,color:#fff
+    style F1 fill:#3498db,stroke:#2980b9,color:#fff
+    style F2 fill:#3498db,stroke:#2980b9,color:#fff
+    style F3 fill:#3498db,stroke:#2980b9,color:#fff
+    style F4 fill:#3498db,stroke:#2980b9,color:#fff
+    style F5 fill:#3498db,stroke:#2980b9,color:#fff
+    style F6 fill:#16a085,stroke:#138d75,color:#fff
+    style F7 fill:#16a085,stroke:#138d75,color:#fff
+    style F8 fill:#f39c12,stroke:#d68910,color:#fff
+    style F9 fill:#f39c12,stroke:#d68910,color:#fff
+    style F10 fill:#f39c12,stroke:#d68910,color:#fff
+    style F11 fill:#f39c12,stroke:#d68910,color:#fff
+    style F12 fill:#8b4513,stroke:#654321,color:#fff
+    style F13 fill:#8b4513,stroke:#654321,color:#fff
+    style F14 fill:#8b4513,stroke:#654321,color:#fff
+    style F15 fill:#27ae60,stroke:#229954,color:#fff
+    style F16 fill:#27ae60,stroke:#229954,color:#fff
+    style F17 fill:#27ae60,stroke:#229954,color:#fff
+    style F18 fill:#f39c12,stroke:#d68910,color:#fff
+    style F19 fill:#3498db,stroke:#2980b9,color:#fff

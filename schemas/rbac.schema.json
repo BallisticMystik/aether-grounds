@@ -1,0 +1,149 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Coffee Platform RBAC Configuration",
+  "description": "JSON Schema for validating coffee-platform-roles.xml structure",
+  "type": "object",
+  "properties": {
+    "coffee-platform": {
+      "type": "object",
+      "properties": {
+        "metadata": {
+          "type": "object",
+          "properties": {
+            "name": { "type": "string" },
+            "description": { "type": "string" },
+            "version": { "type": "string", "pattern": "^\\d+\\.\\d+(\\.\\d+)?$" }
+          },
+          "required": ["name", "description", "version"]
+        },
+        "roles": {
+          "type": "object",
+          "properties": {
+            "role": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": ["farmers", "roasters-retailers", "hub-community", "affiliates-distributors"]
+                  },
+                  "name": { "type": "string" },
+                  "connection-type": {
+                    "type": "string",
+                    "enum": ["pink", "purple"]
+                  },
+                  "features": {
+                    "type": "object",
+                    "properties": {
+                      "feature": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": { "type": "string" },
+                            "name": { "type": "string" },
+                            "access-level": {
+                              "type": "string",
+                              "enum": ["full", "partial", "view-only", "no"]
+                            },
+                            "description": { "type": "string" }
+                          },
+                          "required": ["id", "name", "access-level"]
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["id", "name", "connection-type", "features"]
+              }
+            }
+          }
+        },
+        "feature-catalog": {
+          "type": "object",
+          "properties": {
+            "feature": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": { "type": "string" },
+                  "name": { "type": "string" },
+                  "category": {
+                    "type": "string",
+                    "enum": ["core", "farm-operations", "production-contracts", "certification-traceability", "analytics-ai"]
+                  },
+                  "description": { "type": "string" }
+                },
+                "required": ["id", "name", "category"]
+              }
+            }
+          }
+        },
+        "access-levels": {
+          "type": "object",
+          "properties": {
+            "access-level": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": ["full", "partial", "view-only", "no"]
+                  },
+                  "name": { "type": "string" },
+                  "description": { "type": "string" }
+                },
+                "required": ["id", "name", "description"]
+              }
+            }
+          }
+        },
+        "categories": {
+          "type": "object",
+          "properties": {
+            "category": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": ["core", "farm-operations", "production-contracts", "certification-traceability", "analytics-ai"]
+                  },
+                  "name": { "type": "string" },
+                  "description": { "type": "string" }
+                },
+                "required": ["id", "name", "description"]
+              }
+            }
+          }
+        },
+        "connection-types": {
+          "type": "object",
+          "properties": {
+            "connection-type": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": ["pink", "purple"]
+                  },
+                  "name": { "type": "string" },
+                  "description": { "type": "string" }
+                },
+                "required": ["id", "name", "description"]
+              }
+            }
+          }
+        }
+      },
+      "required": ["metadata", "roles", "feature-catalog", "access-levels", "categories", "connection-types"]
+    }
+  },
+  "required": ["coffee-platform"]
+}

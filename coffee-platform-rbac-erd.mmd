@@ -1,0 +1,45 @@
+erDiagram
+    ROLES ||--o{ ROLE_FEATURE_ACCESS : "has"
+    FEATURES ||--o{ ROLE_FEATURE_ACCESS : "assigned_to"
+    FEATURES }o--|| CATEGORIES : "belongs_to"
+    ROLE_FEATURE_ACCESS }o--|| ACCESS_LEVELS : "uses"
+    ROLES }o--|| CONNECTION_TYPES : "has"
+
+    ROLES {
+        string id PK
+        string name
+        string connection_type_id FK
+        string description
+    }
+
+    FEATURES {
+        string id PK
+        string name
+        string category_id FK
+        string description
+    }
+
+    CATEGORIES {
+        string id PK
+        string name
+        string description
+    }
+
+    ACCESS_LEVELS {
+        string id PK
+        string name
+        string description
+    }
+
+    ROLE_FEATURE_ACCESS {
+        string role_id PK,FK
+        string feature_id PK,FK
+        string access_level_id FK
+        string notes
+    }
+
+    CONNECTION_TYPES {
+        string id PK
+        string name
+        string description
+    }
