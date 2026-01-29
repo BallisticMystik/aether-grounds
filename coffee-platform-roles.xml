@@ -139,9 +139,9 @@
     <categories>
         <category id="core" name="Core" description="Essential platform features available to all roles"/>
         <category id="farm-operations" name="Farm Operations" description="Features specific to farm management"/>
-        <category id="production-contracts" name="Production & Contracts" description="Production and contract management features"/>
-        <category id="certification-traceability" name="Certification & Traceability" description="Certification and supply chain traceability"/>
-        <category id="analytics-ai" name="Analytics & AI" description="Analytics and artificial intelligence tools"/>
+        <category id="production-contracts" name="Production and Contracts" description="Production and contract management features"/>
+        <category id="certification-traceability" name="Certification and Traceability" description="Certification and supply chain traceability"/>
+        <category id="analytics-ai" name="Analytics and AI" description="Analytics and artificial intelligence tools"/>
     </categories>
     
     <!-- Connection Types -->

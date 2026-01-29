@@ -1,2 +1,3 @@
 // Parsers module
-export {};
+export { XMLParser, xmlParser } from './xml-parser';
+export * from './types';
