@@ -26,14 +26,24 @@ export function RoleDashboard({ accessLevel, className = '' }: FeatureComponentP
             { label: 'Revenue', value: '$45.2K', icon: DollarSign, color: 'text-yellow-600' },
           ],
         };
-      case 'roasters-retailers':
+      case 'roasters':
         return {
-          title: 'Roasters/Retailers Dashboard',
+          title: 'Roasters Dashboard',
           metrics: [
             { label: 'Active Contracts', value: '8', icon: Activity, color: 'text-blue-600' },
             { label: 'Roasts This Month', value: '156', icon: TrendingUp, color: 'text-green-600' },
             { label: 'Revenue', value: '$89.5K', icon: DollarSign, color: 'text-purple-600' },
             { label: 'Customers', value: '234', icon: Activity, color: 'text-yellow-600' },
+          ],
+        };
+      case 'retailers':
+        return {
+          title: 'Retailers Dashboard',
+          metrics: [
+            { label: 'Total Sales', value: '$45.2K', icon: DollarSign, color: 'text-blue-600' },
+            { label: 'Products Listed', value: '127', icon: Activity, color: 'text-green-600' },
+            { label: 'This Month Orders', value: '342', icon: TrendingUp, color: 'text-purple-600' },
+            { label: 'Active Customers', value: '189', icon: Activity, color: 'text-yellow-600' },
           ],
         };
       case 'hub-community':

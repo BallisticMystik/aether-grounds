@@ -18,7 +18,8 @@ const RoleContext = createContext<RoleContextType | undefined>(undefined);
 // Available roles from coffee platform
 const AVAILABLE_ROLES: RoleId[] = [
   'farmers',
-  'roasters-retailers',
+  'roasters',
+  'retailers',
   'hub-community',
   'affiliates-distributors'
 ];

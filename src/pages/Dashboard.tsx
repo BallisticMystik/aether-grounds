@@ -7,6 +7,7 @@ import React from 'react';
 import { useRole } from '../contexts/RoleContext';
 import { FarmersDashboard } from '../components/dashboards/FarmersDashboard';
 import { RoastersDashboard } from '../components/dashboards/RoastersDashboard';
+import { RetailersDashboard } from '../components/dashboards/RetailersDashboard';
 import { HubDashboard } from '../components/dashboards/HubDashboard';
 import { AffiliatesDashboard } from '../components/dashboards/AffiliatesDashboard';
 
@@ -17,7 +18,7 @@ export default function Dashboard() {
   if (!currentRole) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">Please select a role to view your dashboard</p>
+        <p className="text-muted-foreground">Please select a role to view your dashboard</p>
       </div>
     );
   }
@@ -25,8 +26,10 @@ export default function Dashboard() {
   switch (currentRole) {
     case 'farmers':
       return <FarmersDashboard />;
-    case 'roasters-retailers':
+    case 'roasters':
       return <RoastersDashboard />;
+    case 'retailers':
+      return <RetailersDashboard />;
     case 'hub-community':
       return <HubDashboard />;
     case 'affiliates-distributors':
@@ -34,7 +37,7 @@ export default function Dashboard() {
     default:
       return (
         <div className="text-center py-12">
-          <p className="text-gray-500">Unknown role: {currentRole}</p>
+          <p className="text-muted-foreground">Unknown role: {currentRole}</p>
         </div>
       );
   }

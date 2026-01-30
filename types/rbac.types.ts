@@ -4,7 +4,7 @@
  */
 
 export type AccessLevel = 'full' | 'partial' | 'view-only' | 'no';
-export type RoleId = 'farmers' | 'roasters-retailers' | 'hub-community' | 'affiliates-distributors';
+export type RoleId = 'farmers' | 'roasters' | 'retailers' | 'hub-community' | 'affiliates-distributors';
 export type ConnectionType = 'pink' | 'purple';
 export type CategoryId = 'core' | 'farm-operations' | 'production-contracts' | 'certification-traceability' | 'analytics-ai';
 

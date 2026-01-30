@@ -26,7 +26,7 @@
                 "properties": {
                   "id": {
                     "type": "string",
-                    "enum": ["farmers", "roasters-retailers", "hub-community", "affiliates-distributors"]
+                    "enum": ["farmers", "roasters", "retailers", "hub-community", "affiliates-distributors"]
                   },
                   "name": { "type": "string" },
                   "connection-type": {

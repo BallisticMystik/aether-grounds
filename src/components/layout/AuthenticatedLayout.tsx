@@ -15,7 +15,7 @@ export function AuthenticatedLayout({ onLogout }: AuthenticatedLayoutProps) {
   const { currentRole } = useRole();
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen bg-background">
       {/* Sidebar - Persistent navigation */}
       <Sidebar onLogout={onLogout} />
 
@@ -26,7 +26,7 @@ export function AuthenticatedLayout({ onLogout }: AuthenticatedLayoutProps) {
             {/* Content will be rendered here by router */}
             {currentRole && (
               <div className="mb-4">
-                <h1 className="text-2xl font-bold text-gray-900">
+                <h1 className="text-2xl font-bold text-foreground">
                   Welcome, {currentRole.replace('-', ' ')}
                 </h1>
               </div>

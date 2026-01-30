@@ -90,7 +90,7 @@ export function Traceability({ accessLevel, className = '' }: FeatureComponentPr
     // This would use the actual supply chain matrix
     // For now, return based on role
     if (stage === 'farm' && currentRole === 'farmers') return 'write-edit';
-    if (stage === 'roast' && currentRole === 'roasters-retailers') return 'write-edit';
+    if (stage === 'roast' && currentRole === 'roasters') return 'write-edit';
     return 'view-only';
   };
 

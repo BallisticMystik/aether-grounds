@@ -21,7 +21,7 @@ export function Profile({ accessLevel, className = '' }: FeatureComponentProps) 
 
   // Get connection type based on role
   const getConnectionType = (): 'pink' | 'purple' => {
-    if (currentRole === 'farmers' || currentRole === 'roasters-retailers') {
+    if (currentRole === 'farmers' || currentRole === 'roasters' || currentRole === 'retailers') {
       return 'purple';
     }
     return 'pink';

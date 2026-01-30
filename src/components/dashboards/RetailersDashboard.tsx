@@ -1,18 +1,18 @@
 /**
- * Farmers Dashboard
- * Role-specific dashboard for Farmers
+ * Retailers Dashboard
+ * Role-specific dashboard for Retailers
  */
 
 import React, { useState } from 'react';
 import { Tabs } from '../ui/Tabs';
 
-export function FarmersDashboard() {
+export function RetailersDashboard() {
   const [activeTab, setActiveTab] = useState('overview');
 
   const tabs = [
     { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'farm-management', label: 'Farm Management', icon: '🚜' },
-    { id: 'iot-devices', label: 'IoT Devices', icon: '📡' },
+    { id: 'shop-mint', label: 'Shop/Mint', icon: '🛒' },
+    { id: 'traceability', label: 'Traceability', icon: '🔍' },
     { id: 'analytics', label: 'Analytics', icon: '📈' },
     { id: 'transactions', label: 'Transactions', icon: '💰' }
   ];
@@ -20,8 +20,8 @@ export function FarmersDashboard() {
   return (
     <div className="dashboard-container">
       <div className="mb-6">
-        <h2 className="text-3xl font-bold text-foreground">Farmers Dashboard</h2>
-        <p className="text-muted-foreground mt-2">Manage your farms, devices, and analytics</p>
+        <h2 className="text-3xl font-bold text-foreground">Retailers Dashboard</h2>
+        <p className="text-muted-foreground mt-2">Manage retail operations and sales</p>
       </div>
 
       <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
@@ -30,45 +30,45 @@ export function FarmersDashboard() {
         {activeTab === 'overview' && (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Farms</h3>
-              <p className="text-3xl font-bold text-primary">12</p>
+              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Sales</h3>
+              <p className="text-3xl font-bold text-primary">$45.2K</p>
             </div>
             <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Active Devices</h3>
-              <p className="text-3xl font-bold text-primary">48</p>
+              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Products Listed</h3>
+              <p className="text-3xl font-bold text-primary">127</p>
             </div>
             <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month's Yield</h3>
-              <p className="text-3xl font-bold text-primary">2.4T</p>
+              <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month Orders</h3>
+              <p className="text-3xl font-bold text-primary">342</p>
             </div>
           </div>
         )}
 
-        {activeTab === 'farm-management' && (
+        {activeTab === 'shop-mint' && (
           <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Farm Management</h3>
-            <p className="text-muted-foreground">Farm management tools and controls</p>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Shop/Mint</h3>
+            <p className="text-muted-foreground">Browse and manage products in the marketplace</p>
           </div>
         )}
 
-        {activeTab === 'iot-devices' && (
+        {activeTab === 'traceability' && (
           <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">IoT Devices</h3>
-            <p className="text-muted-foreground">Monitor and manage IoT devices</p>
+            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Traceability</h3>
+            <p className="text-muted-foreground">Track products from source to customer</p>
           </div>
         )}
 
         {activeTab === 'analytics' && (
           <div className="bg-card border border-border p-6 rounded-lg shadow">
             <h3 className="text-xl font-semibold mb-4 text-card-foreground">Analytics</h3>
-            <p className="text-muted-foreground">View farm analytics and insights</p>
+            <p className="text-muted-foreground">View sales analytics and performance metrics</p>
           </div>
         )}
 
         {activeTab === 'transactions' && (
           <div className="bg-card border border-border p-6 rounded-lg shadow">
             <h3 className="text-xl font-semibold mb-4 text-card-foreground">Transactions</h3>
-            <p className="text-muted-foreground">View transaction history</p>
+            <p className="text-muted-foreground">View transaction history and payments</p>
           </div>
         )}
       </div>

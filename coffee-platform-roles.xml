@@ -31,8 +31,8 @@
             </features>
         </role>
         
-        <!-- Roasters/Retailers Role -->
-        <role id="roasters-retailers" name="Roasters/Retailers" connection-type="purple">
+        <!-- Roasters Role -->
+        <role id="roasters" name="Roasters" connection-type="purple">
             <features>
                 <feature id="profile" name="Profile" access-level="full"/>
                 <feature id="role-dash" name="Role Dashboard" access-level="full"/>
@@ -51,6 +51,30 @@
                 <feature id="transactions" name="Transactions" access-level="full"/>
                 <feature id="farm-management" name="Farm Management" access-level="partial"/>
                 <feature id="blockchain-tools" name="Blockchain Tools" access-level="partial"/>
+                <feature id="iot-devices" name="IoT Devices" access-level="no"/>
+            </features>
+        </role>
+        
+        <!-- Retailers Role -->
+        <role id="retailers" name="Retailers" connection-type="purple">
+            <features>
+                <feature id="profile" name="Profile" access-level="full"/>
+                <feature id="role-dash" name="Role Dashboard" access-level="full"/>
+                <feature id="aether-iq" name="AetherIQ" access-level="full"/>
+                <feature id="coffee-studio" name="Coffee Studio" access-level="full"/>
+                <feature id="shop-mint" name="Shop/Mint" access-level="full"/>
+                <feature id="smart-contract-wizard" name="Smart Contract Wizard" access-level="full"/>
+                <feature id="roasting-contracts" name="Roasting Contracts" access-level="partial"/>
+                <feature id="qr-certs" name="QR Certs" access-level="full"/>
+                <feature id="traceability" name="Traceability" access-level="full"/>
+                <feature id="supply-chain" name="Supply Chain" access-level="full"/>
+                <feature id="ai-tools" name="AI Tools" access-level="partial"/>
+                <feature id="analytics" name="Analytics" access-level="full"/>
+                <feature id="transactions" name="Transactions" access-level="full"/>
+                <feature id="blockchain-tools" name="Blockchain Tools" access-level="partial"/>
+                <feature id="roasting-profiler" name="Roasting Profiler" access-level="no"/>
+                <feature id="farm-analytics" name="All Farm Analytics" access-level="no"/>
+                <feature id="farm-management" name="Farm Management" access-level="no"/>
                 <feature id="iot-devices" name="IoT Devices" access-level="no"/>
             </features>
         </role>
@@ -147,6 +171,6 @@
     <!-- Connection Types -->
     <connection-types>
         <connection-type id="pink" name="Pink Connection" description="Connects to left-side roles (Hubs - Community, Affiliates/Distributors)"/>
-        <connection-type id="purple" name="Purple Connection" description="Connects to right-side roles (Farmers, Roasters/Retailers)"/>
+        <connection-type id="purple" name="Purple Connection" description="Connects to right-side roles (Farmers, Roasters, Retailers)"/>
     </connection-types>
 </coffee-platform>

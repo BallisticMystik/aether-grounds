@@ -35,7 +35,7 @@ export function Hero({
             // Map landing role back to RBAC role
             const roleMap: Record<LandingRole, RoleId> = {
               farmers: 'farmers',
-              roasters: 'roasters-retailers',
+              roasters: 'roasters',
               hubs: 'hub-community',
             };
             onRoleSelect(roleMap[role]);

@@ -3,7 +3,8 @@ import type { RoleId } from '../../types/rbac.types';
 // Map Aether Grounds roles to the landing page roles
 const roleMap: Record<RoleId, 'farmers' | 'roasters' | 'hubs'> = {
   farmers: 'farmers',
-  'roasters-retailers': 'roasters',
+  roasters: 'roasters',
+  retailers: 'roasters', // Retailers map to roasters for landing page
   'hub-community': 'hubs',
   'affiliates-distributors': 'hubs',
 };

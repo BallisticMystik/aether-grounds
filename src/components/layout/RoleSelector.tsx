@@ -11,14 +11,16 @@ import { ChevronDown } from 'lucide-react';
 // Friendly role names
 const roleLabels: Record<RoleId, string> = {
   'farmers': 'Farmers',
-  'roasters-retailers': 'Roasters/Retailers',
+  'roasters': 'Roasters',
+  'retailers': 'Retailers',
   'hub-community': 'Hub - Community',
   'affiliates-distributors': 'Affiliates/Distributors',
 };
 
 const roleIcons: Record<RoleId, string> = {
   'farmers': '🚜',
-  'roasters-retailers': '☕',
+  'roasters': '☕',
+  'retailers': '🛒',
   'hub-community': '🏘️',
   'affiliates-distributors': '📦',
 };
@@ -56,26 +58,26 @@ export function RoleSelector() {
     <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between px-4 py-3 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors text-left"
+        className="w-full flex items-center justify-between px-4 py-3 bg-card hover:bg-accent/10 border border-border rounded-lg transition-colors text-left"
       >
         <div className="flex items-center space-x-3">
           <span className="text-xl">{roleIcons[currentRole]}</span>
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-white">
+            <span className="text-sm font-medium text-foreground">
               {roleLabels[currentRole]}
             </span>
-            <span className="text-xs text-gray-400">Current Role</span>
+            <span className="text-xs text-muted-foreground">Current Role</span>
           </div>
         </div>
         <ChevronDown
-          className={`h-4 w-4 text-gray-400 transition-transform ${
+          className={`h-4 w-4 text-muted-foreground transition-transform ${
             isOpen ? 'transform rotate-180' : ''
           }`}
         />
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-700 rounded-lg shadow-xl z-50 overflow-hidden">
+        <div className="absolute top-full left-0 right-0 mt-2 bg-card border border-border rounded-lg shadow-xl z-50 overflow-hidden">
           <div className="py-1">
             {availableRoles.map((role) => (
               <button
@@ -84,7 +86,7 @@ export function RoleSelector() {
                 className={`w-full flex items-center space-x-3 px-4 py-3 text-left transition-colors ${
                   currentRole === role
                     ? 'bg-primary/20 text-primary'
-                    : 'hover:bg-gray-700 text-gray-300'
+                    : 'hover:bg-accent/10 text-foreground'
                 }`}
               >
                 <span className="text-xl">{roleIcons[role]}</span>
