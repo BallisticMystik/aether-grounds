@@ -4,9 +4,15 @@
  */
 
 import express from 'express';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // Middleware
 app.use(express.json());
@@ -49,8 +55,22 @@ app.get('/api/rbac/status', (req, res) => {
   });
 });
 
-// 404 handler
-app.use((req, res) => {
+// Serve static files from frontend build in production
+if (isProduction) {
+  app.use(express.static(join(__dirname, '../dist')));
+  
+  // SPA fallback: serve index.html for all non-API routes
+  app.get('*', (req, res, next) => {
+    // Skip API routes
+    if (req.path.startsWith('/api') || req.path.startsWith('/health')) {
+      return next();
+    }
+    res.sendFile(join(__dirname, '../dist/index.html'));
+  });
+}
+
+// 404 handler for API routes
+app.use('/api/*', (req, res) => {
   res.status(404).json({
     error: 'Not Found',
     path: req.path,
