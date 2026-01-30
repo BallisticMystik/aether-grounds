@@ -1,0 +1,526 @@
+{
+  "project": "Coffee Platform Role Features Implementation",
+  "version": "1.0",
+  "approach": "TDD",
+  "description": "Implement all features for each role based on Coffee Platform Roles mind map with proper access levels",
+  "promptChain": [
+    {
+      "id": "task-1",
+      "title": "Create Feature Component Structure and Test Harness",
+      "phase": 1,
+      "dependencies": [],
+      "prompt": "Create the feature component structure. Create src/components/features/ directory with index.ts. Create a FeatureWrapper component that handles access level checking (full/partial/view-only/no). Create tests/unit/components/features/FeatureWrapper.test.ts first (TDD). The wrapper should accept: featureId, accessLevel, children, and render children with appropriate restrictions. View-only should disable all inputs. Partial should show limited functionality. No access should show access denied message.",
+      "expectedOutputs": [
+        "src/components/features/index.ts",
+        "src/components/features/FeatureWrapper.tsx",
+        "tests/unit/components/features/FeatureWrapper.test.ts",
+        "src/components/features/types.ts"
+      ],
+      "validation": "Run tests: bun test FeatureWrapper.test.ts - all tests must pass"
+    },
+    {
+      "id": "task-2",
+      "title": "Implement Profile Feature Component",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests first in tests/unit/components/features/Profile.test.tsx. Test: renders user profile, displays user info, allows editing (full access), read-only mode (view-only), partial editing (partial access). Then implement src/components/features/Profile.tsx. Component should show: user name, email, role, connection type (pink/purple), profile picture, edit button (if full access). Use FeatureWrapper for access control.",
+      "expectedOutputs": [
+        "tests/unit/components/features/Profile.test.tsx",
+        "src/components/features/Profile.tsx"
+      ],
+      "validation": "All Profile tests pass, component renders correctly for all access levels"
+    },
+    {
+      "id": "task-3",
+      "title": "Implement Role Dashboard Feature Component",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/RoleDashboard.test.tsx. Test: displays role-specific metrics, shows correct tabs based on role, handles role switching. Then implement src/components/features/RoleDashboard.tsx. This is the main dashboard view that shows role-specific overview with key metrics cards. Should integrate with existing dashboard components.",
+      "expectedOutputs": [
+        "tests/unit/components/features/RoleDashboard.test.tsx",
+        "src/components/features/RoleDashboard.tsx"
+      ],
+      "validation": "RoleDashboard tests pass, displays correctly for all roles"
+    },
+    {
+      "id": "task-4",
+      "title": "Implement AetherIQ Feature Component",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/AetherIQ.test.tsx. Test: displays AI insights, shows data visualizations, handles queries (if full access), view-only mode. Then implement src/components/features/AetherIQ.tsx. Component should show: AI-powered insights dashboard, data analysis tools, query interface (if access allows), visualizations. Use FeatureWrapper for access control.",
+      "expectedOutputs": [
+        "tests/unit/components/features/AetherIQ.test.tsx",
+        "src/components/features/AetherIQ.tsx"
+      ],
+      "validation": "AetherIQ tests pass, component handles all access levels correctly"
+    },
+    {
+      "id": "task-5",
+      "title": "Implement Coffee Studio Feature Component",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/CoffeeStudio.test.tsx. Test: displays coffee profiles, allows creation/editing (full access), view-only mode, partial editing. Then implement src/components/features/CoffeeStudio.tsx. Component should show: coffee profile management, creation tools, editing interface (based on access), profile gallery. Use FeatureWrapper for access control.",
+      "expectedOutputs": [
+        "tests/unit/components/features/CoffeeStudio.test.tsx",
+        "src/components/features/CoffeeStudio.tsx"
+      ],
+      "validation": "CoffeeStudio tests pass, access levels work correctly"
+    },
+    {
+      "id": "task-6",
+      "title": "Implement Shop/Mint Feature Component",
+      "phase": 1,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/ShopMint.test.tsx. Test: displays marketplace, allows purchasing/minting (full access), view-only browsing, transaction history. Then implement src/components/features/ShopMint.tsx. Component should show: marketplace interface, product listings, minting tools (if access allows), purchase interface, transaction history. Use FeatureWrapper for access control.",
+      "expectedOutputs": [
+        "tests/unit/components/features/ShopMint.test.tsx",
+        "src/components/features/ShopMint.tsx"
+      ],
+      "validation": "ShopMint tests pass, marketplace functions correctly"
+    },
+    {
+      "id": "task-7",
+      "title": "Implement Farm Management Feature (Farmers)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/FarmManagement.test.tsx. Test: displays farm list, allows farm creation/editing, shows farm details, manages farm data. Then implement src/components/features/FarmManagement.tsx. Component should show: farm list/grid, farm details view, creation form, editing interface, farm statistics. This is Farmers-only feature (full access).",
+      "expectedOutputs": [
+        "tests/unit/components/features/FarmManagement.test.tsx",
+        "src/components/features/FarmManagement.tsx"
+      ],
+      "validation": "FarmManagement tests pass, only visible to Farmers role"
+    },
+    {
+      "id": "task-8",
+      "title": "Implement IoT Devices Feature (Farmers)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/IoTDevices.test.tsx. Test: displays device list, shows device status, allows device management, real-time updates. Then implement src/components/features/IoTDevices.tsx. Component should show: device dashboard, device list with status, device details, management controls, real-time telemetry. This is Farmers-only feature (full access).",
+      "expectedOutputs": [
+        "tests/unit/components/features/IoTDevices.test.tsx",
+        "src/components/features/IoTDevices.tsx"
+      ],
+      "validation": "IoTDevices tests pass, only visible to Farmers role"
+    },
+    {
+      "id": "task-9",
+      "title": "Implement Smart Contract Wizard Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/SmartContractWizard.test.tsx. Test: displays wizard interface, allows contract creation (full access), view-only mode (Hubs), step-by-step flow. Then implement src/components/features/SmartContractWizard.tsx. Component should show: wizard steps, contract templates, form inputs (if access allows), preview mode (view-only), contract deployment. Use FeatureWrapper - full access for Farmers/Roasters/Affiliates, view-only for Hubs.",
+      "expectedOutputs": [
+        "tests/unit/components/features/SmartContractWizard.test.tsx",
+        "src/components/features/SmartContractWizard.tsx"
+      ],
+      "validation": "SmartContractWizard tests pass, access levels work correctly"
+    },
+    {
+      "id": "task-10",
+      "title": "Implement Roast Profile Feature (Farmers)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/RoastProfile.test.tsx. Test: displays roast profiles, allows creation/editing, shows roast data, profile management. Then implement src/components/features/RoastProfile.tsx. Component should show: roast profile list, profile details, creation form, editing interface, roast parameters. This is Farmers-only feature (full access).",
+      "expectedOutputs": [
+        "tests/unit/components/features/RoastProfile.test.tsx",
+        "src/components/features/RoastProfile.tsx"
+      ],
+      "validation": "RoastProfile tests pass, only visible to Farmers role"
+    },
+    {
+      "id": "task-11",
+      "title": "Implement QR Certs Feature (Cert Suite)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/QRCerts.test.tsx. Test: displays certificate list, allows certificate generation (full access), view-only mode (Hubs), QR code display, certificate validation. Then implement src/components/features/QRCerts.tsx. Component should show: certificate dashboard, certificate list, QR code generator (if access allows), certificate viewer, validation tools. Use FeatureWrapper - full access for most roles, view-only for Hubs.",
+      "expectedOutputs": [
+        "tests/unit/components/features/QRCerts.test.tsx",
+        "src/components/features/QRCerts.tsx"
+      ],
+      "validation": "QRCerts tests pass, access levels work correctly"
+    },
+    {
+      "id": "task-12",
+      "title": "Implement Traceability Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/Traceability.test.tsx. Test: displays traceability chain, shows product journey, allows tracking, view-only mode. Then implement src/components/features/Traceability.tsx. Component should show: traceability map/chain, product journey visualization, tracking interface, history view, blockchain verification. All roles have full access except where specified.",
+      "expectedOutputs": [
+        "tests/unit/components/features/Traceability.test.tsx",
+        "src/components/features/Traceability.tsx"
+      ],
+      "validation": "Traceability tests pass, displays correctly for all roles"
+    },
+    {
+      "id": "task-13",
+      "title": "Implement Supply Chain Feature (Partial Access)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/SupplyChain.test.tsx. Test: displays supply chain map, allows limited editing (partial access), view-only mode, restricted actions. Then implement src/components/features/SupplyChain.tsx. Component should show: supply chain visualization, network map, limited editing tools (for partial access), view-only mode. Use FeatureWrapper - Farmers have partial access, others have full access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/SupplyChain.test.tsx",
+        "src/components/features/SupplyChain.tsx"
+      ],
+      "validation": "SupplyChain tests pass, partial access restrictions work"
+    },
+    {
+      "id": "task-14",
+      "title": "Implement AI Tools Feature (Partial Access)",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/AITools.test.tsx. Test: displays AI tools, allows limited usage (partial access), full access mode, tool restrictions. Then implement src/components/features/AITools.tsx. Component should show: AI tools dashboard, tool list, usage interface (limited for partial), full functionality (for full access). Use FeatureWrapper - Farmers have partial access, others have full access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/AITools.test.tsx",
+        "src/components/features/AITools.tsx"
+      ],
+      "validation": "AITools tests pass, partial access restrictions work"
+    },
+    {
+      "id": "task-15",
+      "title": "Implement Blockchain Tools Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/BlockchainTools.test.tsx. Test: displays blockchain tools, allows tool usage (full/partial access), view-only mode, transaction tools. Then implement src/components/features/BlockchainTools.tsx. Component should show: blockchain tools dashboard, transaction tools, wallet integration, smart contract tools, verification tools. Use FeatureWrapper - Farmers/Roasters have partial access, Hubs/Affiliates have full access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/BlockchainTools.test.tsx",
+        "src/components/features/BlockchainTools.tsx"
+      ],
+      "validation": "BlockchainTools tests pass, access levels work correctly"
+    },
+    {
+      "id": "task-16",
+      "title": "Implement Roasting Contracts Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/RoastingContracts.test.tsx. Test: displays contract list, allows contract creation/editing (full access), partial editing, view-only mode. Then implement src/components/features/RoastingContracts.tsx. Component should show: contract dashboard, contract list, creation form (if access allows), editing interface, contract details. Use FeatureWrapper - Farmers have partial access, Roasters/Hubs/Affiliates have full access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/RoastingContracts.test.tsx",
+        "src/components/features/RoastingContracts.tsx"
+      ],
+      "validation": "RoastingContracts tests pass, access levels work correctly"
+    },
+    {
+      "id": "task-17",
+      "title": "Implement Analytics Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/Analytics.test.tsx. Test: displays analytics dashboard, shows charts/graphs, allows filtering, data export. Then implement src/components/features/Analytics.tsx. Component should show: analytics dashboard, data visualizations, charts, filters, export tools. Most roles have full access, Affiliates have no access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/Analytics.test.tsx",
+        "src/components/features/Analytics.tsx"
+      ],
+      "validation": "Analytics tests pass, access restrictions work correctly"
+    },
+    {
+      "id": "task-18",
+      "title": "Implement All Farm Analytics Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/AllFarmAnalytics.test.tsx. Test: displays farm analytics, view-only mode (Hubs), full access (Farmers), aggregated data. Then implement src/components/features/AllFarmAnalytics.tsx. Component should show: aggregated farm analytics, data visualizations, view-only interface (for Hubs), full analytics tools (for Farmers). Use FeatureWrapper - Farmers have full access, Hubs have view-only, Roasters have partial.",
+      "expectedOutputs": [
+        "tests/unit/components/features/AllFarmAnalytics.test.tsx",
+        "src/components/features/AllFarmAnalytics.tsx"
+      ],
+      "validation": "AllFarmAnalytics tests pass, view-only mode works correctly"
+    },
+    {
+      "id": "task-19",
+      "title": "Implement Transactions Feature",
+      "phase": 2,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/Transactions.test.tsx. Test: displays transaction list, shows transaction details, allows filtering, transaction history. Then implement src/components/features/Transactions.tsx. Component should show: transaction dashboard, transaction list/table, filters, details view, export functionality. Most roles have full access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/Transactions.test.tsx",
+        "src/components/features/Transactions.tsx"
+      ],
+      "validation": "Transactions tests pass, displays correctly"
+    },
+    {
+      "id": "task-20",
+      "title": "Implement Roasting Profiler Feature (Roasters)",
+      "phase": 3,
+      "dependencies": ["task-1"],
+      "prompt": "Using TDD: Write tests in tests/unit/components/features/RoastingProfiler.test.tsx. Test: displays roasting profiler, allows profile creation/editing, shows roast curves, profile management. Then implement src/components/features/RoastingProfiler.tsx. Component should show: roasting profiler interface, profile creation, roast curve visualization, profile library, editing tools. This is Roasters-only feature (full access), Hubs have partial access.",
+      "expectedOutputs": [
+        "tests/unit/components/features/RoastingProfiler.test.tsx",
+        "src/components/features/RoastingProfiler.tsx"
+      ],
+      "validation": "RoastingProfiler tests pass, only visible to Roasters/Hubs"
+    },
+    {
+      "id": "task-21",
+      "title": "Update Roasters Dashboard with All Feature Tabs",
+      "phase": 3,
+      "dependencies": ["task-2", "task-3", "task-4", "task-5", "task-6", "task-9", "task-12", "task-13", "task-14", "task-15", "task-16", "task-17", "task-19", "task-20"],
+      "prompt": "Update src/components/dashboards/RoastersDashboard.tsx to include all features from the mind map. Create tabs for: Profile, Role Dashboard, AetherIQ, Coffee Studio, Shop/Mint, Smart Contract Wizard, Roasting Contracts, Roasting Profiler, QR Certs, Traceability, Supply Chain, AI Tools, Analytics, Transactions. Use the feature components created in previous tasks. Ensure tabs are only shown if the role has access. Write tests in tests/unit/components/dashboards/RoastersDashboard.test.tsx first (TDD).",
+      "expectedOutputs": [
+        "tests/unit/components/dashboards/RoastersDashboard.test.tsx",
+        "src/components/dashboards/RoastersDashboard.tsx"
+      ],
+      "validation": "RoastersDashboard shows all 12 features, tests pass"
+    },
+    {
+      "id": "task-22",
+      "title": "Implement Access Level Restrictions for Roasters",
+      "phase": 3,
+      "dependencies": ["task-21"],
+      "prompt": "Update Roasters Dashboard to handle partial and view-only access levels. All Farm Analytics should show as partial access. Farm Management should show as partial access. Blockchain Tools should show as partial access. IoT Devices should show as no access. Write tests to verify access level indicators and restrictions work correctly.",
+      "expectedOutputs": [
+        "tests/unit/components/dashboards/RoastersDashboard-access.test.tsx"
+      ],
+      "validation": "Access level restrictions work correctly for Roasters role"
+    },
+    {
+      "id": "task-23",
+      "title": "Update Hub Dashboard with All Feature Tabs",
+      "phase": 4,
+      "dependencies": ["task-2", "task-3", "task-4", "task-5", "task-6", "task-9", "task-11", "task-18"],
+      "prompt": "Update src/components/dashboards/HubDashboard.tsx to include all features from the mind map. Create tabs for: Profile, Role Dashboard, AetherIQ, Coffee Studio, Shop/Mint, All Farm Analytics (VIEW ONLY), Smart Contract Wizard (VIEW ONLY), QR Certs (VIEW ONLY). Use the feature components with view-only restrictions. Write tests in tests/unit/components/dashboards/HubDashboard.test.tsx first (TDD). Ensure view-only features show appropriate UI indicators.",
+      "expectedOutputs": [
+        "tests/unit/components/dashboards/HubDashboard.test.tsx",
+        "src/components/dashboards/HubDashboard.tsx"
+      ],
+      "validation": "HubDashboard shows all 8 features, 3 marked as VIEW ONLY, tests pass"
+    },
+    {
+      "id": "task-24",
+      "title": "Implement View-Only Access Restrictions and UI Indicators",
+      "phase": 4,
+      "dependencies": ["task-23"],
+      "prompt": "Enhance FeatureWrapper to show clear view-only indicators. Add visual badges/icons for view-only mode. Disable all interactive elements in view-only mode. Add tooltips explaining access restrictions. Update Hub Dashboard to show view-only badges on: All Farm Analytics, Smart Contract Wizard, QR Certs. Write tests to verify view-only UI indicators display correctly.",
+      "expectedOutputs": [
+        "src/components/features/ViewOnlyBadge.tsx",
+        "tests/unit/components/features/ViewOnlyBadge.test.tsx",
+        "src/components/features/FeatureWrapper.tsx (updated)"
+      ],
+      "validation": "View-only indicators display correctly, all interactions disabled"
+    },
+    {
+      "id": "task-25",
+      "title": "Update Affiliates Dashboard with All Feature Tabs",
+      "phase": 5,
+      "dependencies": ["task-2", "task-3", "task-4", "task-5", "task-6", "task-9", "task-11", "task-12", "task-13", "task-14", "task-15"],
+      "prompt": "Update src/components/dashboards/AffiliatesDashboard.tsx to include all features from the mind map. Create tabs for: Profile, Role Dashboard, Smart Contract Wizard, Blockchain Tools, Roasting Contracts, QR Certs, Traceability, Supply Chain, AI Tools, AetherIQ, Coffee Studio, Shop/Mint. Ensure Farm Management, IoT Devices, Roasting Profiler, and Analytics are NOT shown (no access). Write tests in tests/unit/components/dashboards/AffiliatesDashboard.test.tsx first (TDD).",
+      "expectedOutputs": [
+        "tests/unit/components/dashboards/AffiliatesDashboard.test.tsx",
+        "src/components/dashboards/AffiliatesDashboard.tsx"
+      ],
+      "validation": "AffiliatesDashboard shows 12 features, excludes no-access features, tests pass"
+    },
+    {
+      "id": "task-26",
+      "title": "Create Feature Mapping Utility from XML to Components",
+      "phase": 6,
+      "dependencies": ["task-21", "task-23", "task-25"],
+      "prompt": "Create src/utils/featureMapper.ts that maps features from coffee-platform-roles.xml to React components. The utility should: parse XML role data, map feature IDs to component imports, determine access levels, generate tab configurations per role. Write tests in tests/unit/utils/featureMapper.test.ts first (TDD). The mapper should be used by dashboards to dynamically generate tabs based on role.",
+      "expectedOutputs": [
+        "tests/unit/utils/featureMapper.test.ts",
+        "src/utils/featureMapper.ts",
+        "src/utils/featureMap.ts"
+      ],
+      "validation": "FeatureMapper correctly maps XML features to components, tests pass"
+    },
+    {
+      "id": "task-27",
+      "title": "Integrate RBAC Access Level Checking",
+      "phase": 6,
+      "dependencies": ["task-26"],
+      "prompt": "Integrate RBAC framework access level checking into feature components. Update FeatureWrapper to use RBAC.hasAccess() method. Create src/hooks/useFeatureAccess.ts hook that wraps RBAC checks. Update all feature components to use the hook. Write tests in tests/unit/hooks/useFeatureAccess.test.ts first (TDD). Ensure access levels (full/partial/view-only/no) are properly enforced.",
+      "expectedOutputs": [
+        "tests/unit/hooks/useFeatureAccess.test.ts",
+        "src/hooks/useFeatureAccess.ts",
+        "src/components/features/FeatureWrapper.tsx (updated)"
+      ],
+      "validation": "RBAC access checking works correctly, all access levels enforced"
+    },
+    {
+      "id": "task-28",
+      "title": "Update All Dashboards to Dynamically Show Features",
+      "phase": 6,
+      "dependencies": ["task-26", "task-27"],
+      "prompt": "Refactor all dashboard components to use featureMapper utility. Dashboards should dynamically generate tabs based on role and XML configuration. Remove hardcoded tab lists. Use featureMapper.getRoleFeatures(roleId) to get available features. Write integration tests in tests/integration/dashboards/dynamic-features.test.tsx. Ensure features are correctly shown/hidden based on role.",
+      "expectedOutputs": [
+        "tests/integration/dashboards/dynamic-features.test.tsx",
+        "src/components/dashboards/FarmersDashboard.tsx (refactored)",
+        "src/components/dashboards/RoastersDashboard.tsx (refactored)",
+        "src/components/dashboards/HubDashboard.tsx (refactored)",
+        "src/components/dashboards/AffiliatesDashboard.tsx (refactored)"
+      ],
+      "validation": "All dashboards dynamically show correct features per role, tests pass"
+    },
+    {
+      "id": "task-29",
+      "title": "Implement Feature Access Indicators (Badges)",
+      "phase": 6,
+      "dependencies": ["task-24"],
+      "prompt": "Create comprehensive access level badge system. Create src/components/ui/AccessBadge.tsx component that shows: Full Access (green), Partial Access (yellow), View Only (blue), No Access (red/gray). Add badges to feature tabs and feature components. Write tests in tests/unit/components/ui/AccessBadge.test.tsx. Ensure badges are visually clear and accessible.",
+      "expectedOutputs": [
+        "tests/unit/components/ui/AccessBadge.test.tsx",
+        "src/components/ui/AccessBadge.tsx"
+      ],
+      "validation": "Access badges display correctly for all access levels, tests pass"
+    },
+    {
+      "id": "task-30",
+      "title": "Add Feature-Level Permission Checks in Components",
+      "phase": 6,
+      "dependencies": ["task-27"],
+      "prompt": "Add granular permission checks within feature components. Each feature should check specific permissions before allowing actions. Create src/utils/permissionChecks.ts with helper functions: canCreate(), canEdit(), canDelete(), canView(). Update all feature components to use these checks. Write tests in tests/unit/utils/permissionChecks.test.ts. Ensure actions are properly restricted based on access level.",
+      "expectedOutputs": [
+        "tests/unit/utils/permissionChecks.test.ts",
+        "src/utils/permissionChecks.ts"
+      ],
+      "validation": "Permission checks work correctly, actions properly restricted"
+    },
+    {
+      "id": "task-31",
+      "title": "Create Feature Icon Mapping",
+      "phase": 7,
+      "dependencies": [],
+      "prompt": "Create src/utils/featureIcons.ts that maps feature IDs to icons (Lucide React icons). Each feature should have an appropriate icon. Create icon mapping for all features: Profile (User), Role Dashboard (LayoutDashboard), AetherIQ (Brain), Coffee Studio (Coffee), Shop/Mint (ShoppingCart), Farm Management (Tractor), IoT Devices (Radio), etc. Write tests to verify icon mapping works. Use icons in dashboard tabs.",
+      "expectedOutputs": [
+        "src/utils/featureIcons.ts",
+        "tests/unit/utils/featureIcons.test.ts"
+      ],
+      "validation": "All features have appropriate icons, mapping works correctly"
+    },
+    {
+      "id": "task-32",
+      "title": "Implement Feature Grouping/Categorization",
+      "phase": 7,
+      "dependencies": ["task-26"],
+      "prompt": "Group features into logical categories in dashboards. Create src/utils/featureCategories.ts that groups features: Core (Profile, Role Dashboard), Operations (Farm Management, IoT Devices), Contracts (Roasting Contracts, Smart Contract Wizard), Analytics (Analytics, All Farm Analytics), Tools (AI Tools, Blockchain Tools), Marketplace (Shop/Mint, Coffee Studio). Update dashboards to show grouped tabs or sections. Write tests for categorization.",
+      "expectedOutputs": [
+        "src/utils/featureCategories.ts",
+        "tests/unit/utils/featureCategories.test.ts"
+      ],
+      "validation": "Features are properly categorized, grouping works in dashboards"
+    },
+    {
+      "id": "task-33",
+      "title": "Add Feature Search/Filter Functionality",
+      "phase": 7,
+      "dependencies": ["task-32"],
+      "prompt": "Add search and filter functionality to dashboards. Create src/components/dashboards/FeatureSearch.tsx component. Allow users to search features by name, filter by category, filter by access level. Write tests in tests/unit/components/dashboards/FeatureSearch.test.tsx. Integrate into all dashboard components. Ensure search works with dynamic feature lists.",
+      "expectedOutputs": [
+        "tests/unit/components/dashboards/FeatureSearch.test.tsx",
+        "src/components/dashboards/FeatureSearch.tsx"
+      ],
+      "validation": "Feature search and filter work correctly, tests pass"
+    },
+    {
+      "id": "task-34",
+      "title": "Implement Responsive Layouts for Feature Components",
+      "phase": 7,
+      "dependencies": ["task-2", "task-3", "task-4", "task-5", "task-6"],
+      "prompt": "Ensure all feature components are responsive. Test on mobile, tablet, and desktop breakpoints. Update components to use responsive Tailwind classes. Create responsive layouts for: feature grids, forms, data tables, charts. Write responsive design tests. Ensure all features work well on all screen sizes.",
+      "expectedOutputs": [
+        "tests/unit/components/features/responsive.test.tsx"
+      ],
+      "validation": "All feature components are responsive, work on all screen sizes"
+    },
+    {
+      "id": "task-35",
+      "title": "Write Integration Tests for Role-Based Feature Access",
+      "phase": 8,
+      "dependencies": ["task-28"],
+      "prompt": "Write comprehensive integration tests in tests/integration/role-features.test.tsx. Test: feature visibility per role, access level enforcement, feature switching between roles, dynamic tab generation, RBAC integration. Test all 4 roles and verify correct features are shown/hidden. Use React Testing Library for component testing.",
+      "expectedOutputs": [
+        "tests/integration/role-features.test.tsx"
+      ],
+      "validation": "All integration tests pass, role-based access verified"
+    },
+    {
+      "id": "task-36",
+      "title": "Write E2E Tests for Feature Navigation",
+      "phase": 8,
+      "dependencies": ["task-28"],
+      "prompt": "Write E2E tests using Playwright or similar. Test: user selects role, sees correct dashboard, navigates to features, access restrictions work, role switching updates features. Create tests/e2e/feature-navigation.spec.ts. Test all roles and key features. Ensure tests cover happy paths and edge cases.",
+      "expectedOutputs": [
+        "tests/e2e/feature-navigation.spec.ts",
+        "playwright.config.ts"
+      ],
+      "validation": "E2E tests pass, feature navigation works correctly"
+    },
+    {
+      "id": "task-37",
+      "title": "Validate All Access Levels Match XML Configuration",
+      "phase": 8,
+      "dependencies": ["task-27"],
+      "prompt": "Create validation script tests/validation/access-level-validation.test.ts that reads coffee-platform-roles.xml and validates that all access levels in the UI match the XML. Test: feature access levels, role permissions, access level consistency. Ensure no discrepancies between XML and implementation.",
+      "expectedOutputs": [
+        "tests/validation/access-level-validation.test.ts"
+      ],
+      "validation": "All access levels match XML configuration, validation passes"
+    },
+    {
+      "id": "task-38",
+      "title": "Test Feature Visibility Based on Role Switching",
+      "phase": 8,
+      "dependencies": ["task-28"],
+      "prompt": "Write tests in tests/integration/role-switching.test.tsx that verify feature visibility updates when role changes. Test: switch from Farmers to Roasters, verify features change, switch to Hubs, verify view-only features appear, switch to Affiliates, verify restricted features hidden. Ensure smooth transitions.",
+      "expectedOutputs": [
+        "tests/integration/role-switching.test.tsx"
+      ],
+      "validation": "Role switching updates features correctly, tests pass"
+    },
+    {
+      "id": "task-39",
+      "title": "Performance Testing for Feature Component Loading",
+      "phase": 8,
+      "dependencies": ["task-28"],
+      "prompt": "Write performance tests for feature component loading. Test: initial load time, lazy loading of features, tab switching performance, large feature list rendering. Use React Profiler. Ensure components load within acceptable time limits. Optimize if needed.",
+      "expectedOutputs": [
+        "tests/performance/feature-loading.test.tsx"
+      ],
+      "validation": "Feature components load within performance thresholds"
+    },
+    {
+      "id": "task-40",
+      "title": "Document Feature Component API",
+      "phase": 9,
+      "dependencies": ["task-30"],
+      "prompt": "Create comprehensive documentation in docs/features/API.md. Document: FeatureWrapper API, all feature components, props, access levels, usage examples, permission checks. Include TypeScript types and interfaces. Add JSDoc comments to all feature components.",
+      "expectedOutputs": [
+        "docs/features/API.md",
+        "docs/features/README.md"
+      ],
+      "validation": "Documentation is complete and accurate"
+    },
+    {
+      "id": "task-41",
+      "title": "Create Feature Usage Examples Per Role",
+      "phase": 9,
+      "dependencies": ["task-28"],
+      "prompt": "Create usage examples in examples/features/ showing how to use features for each role. Create example files: farmers-example.tsx, roasters-example.tsx, hubs-example.tsx, affiliates-example.tsx. Show: feature access, permission checks, component usage, access level handling.",
+      "expectedOutputs": [
+        "examples/features/farmers-example.tsx",
+        "examples/features/roasters-example.tsx",
+        "examples/features/hubs-example.tsx",
+        "examples/features/affiliates-example.tsx"
+      ],
+      "validation": "Examples work correctly and demonstrate proper usage"
+    },
+    {
+      "id": "task-42",
+      "title": "Update Architecture Documentation",
+      "phase": 9,
+      "dependencies": ["task-28"],
+      "prompt": "Update ARCHITECTURE.md to include feature component structure. Document: feature component hierarchy, access level system, RBAC integration, feature mapping, dynamic dashboard generation. Include diagrams if helpful.",
+      "expectedOutputs": [
+        "ARCHITECTURE.md (updated)"
+      ],
+      "validation": "Architecture documentation is up to date"
+    },
+    {
+      "id": "task-43",
+      "title": "Create Feature Access Matrix Visualization",
+      "phase": 9,
+      "dependencies": ["task-37"],
+      "prompt": "Create a visual feature access matrix. Generate a markdown table or create a component that shows: all features (rows) vs all roles (columns) with access levels (full/partial/view-only/no) as cells. Save as docs/features/access-matrix.md. Include color coding for easy reading.",
+      "expectedOutputs": [
+        "docs/features/access-matrix.md"
+      ],
+      "validation": "Access matrix accurately represents all role-feature permissions"
+    }
+  ]
+}

@@ -15,11 +15,17 @@
     "sourceMap": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "types": ["node", "vitest/globals"]
+    "types": ["node", "vitest/globals"],
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": [
     "src/**/*",
-    "tests/**/*"
+    "tests/**/*",
+    "index.html"
   ],
   "exclude": [
     "node_modules",

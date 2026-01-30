@@ -1,0 +1,153 @@
+/********************************************/
+/********************************************/
+/* Please ❤ this if you like it! */
+/* Follow Me https://codepen.io/designfenix */
+/********************************************/
+/********************************************/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+/**/
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@800&display=swap');
+@import url("https://fonts.googleapis.com/css?family=Montserrat:400,600,700");
+
+*{
+	padding:0;
+	margin:0;
+}
+
+.hero{
+	position: relative;
+  height: 200vh;
+  overflow: hidden;
+	scroll-behavior: smooth;
+}
+
+.hero__starship, 
+.hero__scene{
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.hero__title{
+	font-family: "Oxanium", sans-serif;
+	font-optical-sizing: auto;
+	font-weight: 800;
+	font-style: normal;
+	position: fixed;
+	font-size: clamp(1.6rem, 10vw, 8rem);
+	white-space: nowrap;
+	color: white;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	z-index:2;
+	animation: contract linear forwards;
+    animation-timeline: scroll(root);
+    animation-range: 0vh 100dvh;
+	mix-blend-mode: overlay;
+}
+
+.hero__starship{
+	animation: upscale linear forwards;
+    animation-timeline: scroll(root);
+    animation-range: 0vh 60vh;
+	z-index:3;
+	pointer-events:none;
+}
+
+.hero__scene{
+	animation: unblur linear forwards;
+    animation-timeline: scroll(root);
+    animation-range: 0vh 100dvh;
+	z-index:1;
+	pointer-events:none;
+}
+
+@keyframes contract {
+	0%{
+		letter-spacing: -1.5rem;
+		opacity:0;
+	}
+	100%{
+		letter-spacing: 0;
+		opacity:1;
+	}
+}
+
+@keyframes unblur {
+  0% {
+    filter: blur(10px);
+		transform: translate(-50%, -50%) scale(1.1);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.4);
+		filter: blur(0px);
+  }
+}
+
+@keyframes upscale {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  95% {
+    transform: translate(-50%, -50%) scale(5);
+		opacity:1;
+  }
+	100% {
+    transform: translate(-50%, -50%) scale(5);
+		opacity:1;
+  }
+}
+
+/*Dev*/
+#dev {
+	font-family: "Montserrat", sans-serif;
+	position: fixed;
+	font-size: 14px;
+	top: 10px;
+	left: 10px;
+	padding: 1em;
+	color: #333;
+	background-color: white;
+	border-radius: 25px;
+	cursor: pointer;
+	z-index:5;
+}
+
+#dev a {
+	text-decoration: none;
+	font-weight: bold;
+	color: #333;
+	transition: ease all 0.4s;
+}
+
+#dev a:hover {
+	color: #ef5350;
+	text-decoration: underline;
+}
+
+#dev span {
+	display: inline-block;
+	transition: ease all 0.4s;
+	color: pink;
+}
+
+#dev span:hover {
+	transform: scale(1.2);
+}
