@@ -18,6 +18,17 @@ const isProduction = process.env.NODE_ENV === 'production';
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// CORS for development
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(200);
+  }
+  next();
+});
+
 // Health check endpoint
 app.get('/health', (req, res) => {
   res.json({
@@ -41,6 +52,18 @@ app.get('/api/info', (req, res) => {
     }
   });
 });
+
+// Authentication routes
+import authRouter from './api/auth';
+app.use('/api/auth', authRouter);
+
+// Initialize database on startup
+import { runMigrations } from './db/migrations';
+if (import.meta.main) {
+  runMigrations().catch((err) => {
+    console.error('Failed to run migrations:', err);
+  });
+}
 
 // Placeholder for RBAC endpoints (will be implemented later)
 app.get('/api/rbac/status', (req, res) => {

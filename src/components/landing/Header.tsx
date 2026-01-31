@@ -1,13 +1,14 @@
 import { Button } from '@/components/ui/button';
 import { content } from '@/lib/content';
 import { Wallet } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-14 max-w-screen-2xl items-center">
-        <div className="mr-4 flex">
-          <a href="/" className="mr-6 flex items-center space-x-2">
+      <div className="container flex h-14 max-w-screen-2xl items-center justify-between">
+        <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center space-x-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -22,15 +23,16 @@ export function Header() {
               <path d="M2 17l10 5 10-5" />
               <path d="M2 12l10 5 10-5" />
             </svg>
-            <span className="font-bold">Aether Grounds</span>
+            <span className="font-bold text-foreground">Aether Grounds</span>
           </a>
         </div>
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <Button variant="outline">
-            <Wallet className="mr-2 h-4 w-4" />
-            Connect Wallet
+        <div className="flex items-center gap-2">
+          <Button variant="ghost" asChild>
+            <Link to="/login">Sign In</Link>
           </Button>
-          <Button>{content.cta.button}</Button>
+          <Button className="bg-primary text-primary-foreground" asChild>
+            <Link to="/register">{content.cta.button}</Link>
+          </Button>
         </div>
       </div>
     </header>

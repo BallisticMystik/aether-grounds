@@ -5,6 +5,7 @@
  */
 
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import { useRole } from '../../contexts/RoleContext';
 import type { RoleId } from '../../../types/rbac.types';
 import { RoleSelector } from './RoleSelector';
@@ -22,7 +23,7 @@ import {
   Search,
   Network,
   Sparkles,
-  Link,
+  Link as LinkIcon,
   FileCheck,
   BarChart3,
   TrendingUp,
@@ -382,7 +383,7 @@ const navigationItems: NavigationItem[] = [
   {
     label: 'Blockchain Tools',
     path: '/blockchain-tools',
-    icon: Link,
+    icon: LinkIcon,
     roles: ['retailers'],
     category: 'production',
     section: 'analytics-retailers',
@@ -515,7 +516,7 @@ const navigationItems: NavigationItem[] = [
   {
     label: 'Blockchain Tools',
     path: '/blockchain-tools',
-    icon: Link,
+    icon: LinkIcon,
     roles: ['hub-community'],
     category: 'production',
     section: 'view-only-hubs',
@@ -573,7 +574,7 @@ const navigationItems: NavigationItem[] = [
   {
     label: 'Blockchain Tools',
     path: '/blockchain-tools',
-    icon: Link,
+    icon: LinkIcon,
     roles: ['affiliates-distributors'],
     category: 'production',
     section: 'production-affiliates',
@@ -645,7 +646,6 @@ const sectionLabels: Record<string, string> = {
 
 export function Sidebar({ onLogout }: SidebarProps) {
   const { currentRole } = useRole();
-  const [activePath, setActivePath] = React.useState<string>('/dashboard');
 
   // Filter navigation items based on current role
   const visibleItems = navigationItems.filter(
@@ -672,13 +672,15 @@ export function Sidebar({ onLogout }: SidebarProps) {
     {} as Record<string, NavigationItem[]>
   );
 
-  // Handle navigation click
-  const handleNavClick = (path: string, e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault();
-    setActivePath(path);
-    // TODO: Implement actual routing when React Router is added
-    console.log('Navigate to:', path);
-  };
+  // NavLink className function for active state styling
+  const getNavLinkClassName = ({ isActive }: { isActive: boolean }) =>
+    cn(
+      'flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors',
+      'hover:bg-accent hover:text-accent-foreground',
+      isActive
+        ? 'bg-accent text-accent-foreground font-medium'
+        : 'text-muted-foreground'
+    );
 
   return (
     <aside className="w-64 bg-card border-r border-border flex flex-col h-screen">
@@ -700,22 +702,14 @@ export function Sidebar({ onLogout }: SidebarProps) {
           <div className="space-y-2 mb-6">
             {(() => {
               const Icon = dashboardItem.icon;
-              const isActive = activePath === dashboardItem.path;
               return (
-                <a
-                  href={dashboardItem.path}
-                  onClick={(e) => handleNavClick(dashboardItem.path, e)}
-                  className={cn(
-                    'flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors',
-                    'hover:bg-accent hover:text-accent-foreground',
-                    isActive
-                      ? 'bg-accent text-accent-foreground font-medium'
-                      : 'text-muted-foreground'
-                  )}
+                <NavLink
+                  to={dashboardItem.path}
+                  className={getNavLinkClassName}
                 >
                   <Icon className="h-5 w-5" />
                   <span className="text-sm font-medium">{dashboardItem.label}</span>
-                </a>
+                </NavLink>
               );
             })()}
           </div>
@@ -731,23 +725,15 @@ export function Sidebar({ onLogout }: SidebarProps) {
             )}
             {items.map((item) => {
               const Icon = item.icon;
-              const isActive = activePath === item.path;
               return (
-                <a
+                <NavLink
                   key={`${section}-${item.path}`}
-                  href={item.path}
-                  onClick={(e) => handleNavClick(item.path, e)}
-                  className={cn(
-                    'flex items-center space-x-3 px-3 py-2.5 rounded-lg transition-colors',
-                    'hover:bg-accent hover:text-accent-foreground',
-                    isActive
-                      ? 'bg-accent text-accent-foreground font-medium'
-                      : 'text-muted-foreground'
-                  )}
+                  to={item.path}
+                  className={getNavLinkClassName}
                 >
                   <Icon className="h-5 w-5" />
                   <span className="text-sm">{item.label}</span>
-                </a>
+                </NavLink>
               );
             })}
           </div>

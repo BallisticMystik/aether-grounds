@@ -1,0 +1,299 @@
+{
+  "sidechain": "physical-integration",
+  "description": "Physically integrate all AETHER GROUNDS components with routing, RBAC, and navigation",
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Routing Infrastructure & Setup",
+      "tasks": [
+        {
+          "id": 1,
+          "task": "Install React Router and create routing test setup",
+          "prompt": "Install react-router-dom package. Create test setup for routing with MemoryRouter. Write tests that verify router can be instantiated and basic navigation works. Use TDD - write tests first, then implement.",
+          "files": ["package.json", "tests/setup.ts", "tests/integration/routing.test.tsx"],
+          "validation": "React Router installed. Test setup created. Basic routing tests pass."
+        },
+        {
+          "id": 2,
+          "task": "Create route configuration structure with tests",
+          "prompt": "Create src/routes/index.ts with route configuration structure. Define route types matching FeatureId from RBAC. Create route config array mapping paths to components. Write tests for route configuration parsing and validation. Use TDD.",
+          "files": ["src/routes/index.ts", "src/routes/types.ts", "tests/routes/config.test.ts"],
+          "validation": "Route configuration structure exists. Types match RBAC FeatureId. Tests pass."
+        },
+        {
+          "id": 3,
+          "task": "Create ProtectedRoute component with RBAC integration and tests",
+          "prompt": "Create src/components/routing/ProtectedRoute.tsx. Component should check RBAC permissions using RoleContext and RBAC utilities. Redirect to unauthorized if access denied. Show access level badges. Write comprehensive tests covering all access levels (full, partial, view-only, no). Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "tests/components/ProtectedRoute.test.tsx"],
+          "validation": "ProtectedRoute component works. RBAC checks function correctly. All access level tests pass."
+        },
+        {
+          "id": 4,
+          "task": "Create route-to-feature mapping utility with tests",
+          "prompt": "Create src/utils/routeMapping.ts. Map route paths to FeatureId, component imports, and access requirements. Create helper functions: getRouteConfig, getFeatureFromPath, getComponentForRoute. Write tests for all mapping functions. Use TDD.",
+          "files": ["src/utils/routeMapping.ts", "tests/utils/routeMapping.test.ts"],
+          "validation": "Route mapping utility works. All helper functions tested. Maps correctly to COMPONENT_REFERENCE.MD."
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Core Routing Integration",
+      "tasks": [
+        {
+          "id": 5,
+          "task": "Set up root App routing with BrowserRouter and tests",
+          "prompt": "Update src/App.tsx to use BrowserRouter. Create route structure with Landing and authenticated routes. Add Route components for / and /dashboard. Write tests for root routing. Use TDD.",
+          "files": ["src/App.tsx", "tests/App.test.tsx"],
+          "validation": "Root routing works. Landing and Dashboard routes accessible. Tests pass."
+        },
+        {
+          "id": 6,
+          "task": "Integrate Dashboard route with role-based routing and tests",
+          "prompt": "Update src/pages/Dashboard.tsx to work with React Router. Ensure role-based dashboard switching still works. Add route parameter handling if needed. Write tests for role-based dashboard routing. Use TDD.",
+          "files": ["src/pages/Dashboard.tsx", "tests/pages/Dashboard.test.tsx"],
+          "validation": "Dashboard routing works. Role switching functions correctly. Tests pass."
+        },
+        {
+          "id": 7,
+          "task": "Connect Sidebar navigation to React Router with tests",
+          "prompt": "Update src/components/layout/Sidebar.tsx. Replace handleNavClick with React Router Link components. Use useNavigate and useLocation hooks. Remove console.log TODO. Write tests for navigation clicks. Use TDD.",
+          "files": ["src/components/layout/Sidebar.tsx", "tests/components/Sidebar.test.tsx"],
+          "validation": "Sidebar navigation uses React Router. Navigation works correctly. Tests pass."
+        },
+        {
+          "id": 8,
+          "task": "Update AuthenticatedLayout to use Outlet for nested routes and tests",
+          "prompt": "Update src/components/layout/AuthenticatedLayout.tsx. Replace placeholder content comment with <Outlet /> from React Router. Ensure Sidebar and layout structure remain intact. Write tests for layout rendering with nested routes. Use TDD.",
+          "files": ["src/components/layout/AuthenticatedLayout.tsx", "tests/components/AuthenticatedLayout.test.tsx"],
+          "validation": "AuthenticatedLayout uses Outlet. Nested routes render correctly. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Feature Component Routing",
+      "tasks": [
+        {
+          "id": 9,
+          "task": "Create routes for all Core features (Profile, AetherIQ, CoffeeStudio, ShopMint) with tests",
+          "prompt": "Add routes in src/App.tsx for /profile, /aether-iq, /coffee-studio, /shop-mint. Wrap each in ProtectedRoute with appropriate FeatureId. Import components from src/components/features. Write tests for each route. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/core-features.test.tsx"],
+          "validation": "All core feature routes work. ProtectedRoute enforces access. Tests pass."
+        },
+        {
+          "id": 10,
+          "task": "Create routes for Farm Operations features (FarmManagement, IoTDevices, AllFarmAnalytics) with tests",
+          "prompt": "Add routes for /farm-management, /iot-devices, /farm-analytics. Wrap in ProtectedRoute. Ensure only farmers and hub-community can access (per COMPONENT_REFERENCE.MD). Write tests for access restrictions. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/farm-operations.test.tsx"],
+          "validation": "Farm operations routes work. Access restrictions enforced. Tests pass."
+        },
+        {
+          "id": 11,
+          "task": "Create routes for Production features (SmartContractWizard, RoastProfile, RoastingContracts, RoastingProfiler) with tests",
+          "prompt": "Add routes for /smart-contract-wizard, /roast-profile, /roasting-contracts, /roasting-profiler. Wrap in ProtectedRoute. Verify role access matches COMPONENT_REFERENCE.MD. Write tests. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/production-features.test.tsx"],
+          "validation": "Production routes work. Role access correct. Tests pass."
+        },
+        {
+          "id": 12,
+          "task": "Create routes for Certification features (QRCerts, Traceability, SupplyChain) with tests",
+          "prompt": "Add routes for /qr-certs, /traceability, /supply-chain. Wrap in ProtectedRoute. All roles should have access per COMPONENT_REFERENCE.MD. Write tests. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/certification-features.test.tsx"],
+          "validation": "Certification routes work. All roles can access. Tests pass."
+        },
+        {
+          "id": 13,
+          "task": "Create routes for Analytics features (Analytics, AITools, BlockchainTools) with tests",
+          "prompt": "Add routes for /analytics, /ai-tools, /blockchain-tools. Wrap in ProtectedRoute. Verify access levels match COMPONENT_REFERENCE.MD (some partial, some full). Write tests. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/analytics-features.test.tsx"],
+          "validation": "Analytics routes work. Access levels enforced. Tests pass."
+        },
+        {
+          "id": 14,
+          "task": "Create routes for Commerce features (Transactions) with tests",
+          "prompt": "Add route for /transactions. Wrap in ProtectedRoute. Verify farmers, roasters, retailers, hub-community can access. Write tests. Use TDD.",
+          "files": ["src/App.tsx", "tests/routes/commerce-features.test.tsx"],
+          "validation": "Transactions route works. Correct roles can access. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "RBAC Route Protection",
+      "tasks": [
+        {
+          "id": 15,
+          "task": "Integrate RBAC access checks into ProtectedRoute with tests",
+          "prompt": "Enhance ProtectedRoute to use RBAC utilities from src/core. Check feature access using hasAccess method. Show appropriate UI for different access levels. Write comprehensive tests for all access level scenarios. Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "tests/components/ProtectedRoute.test.tsx"],
+          "validation": "RBAC checks work in ProtectedRoute. All access levels handled. Tests pass."
+        },
+        {
+          "id": 16,
+          "task": "Add role-based route filtering in Sidebar with tests",
+          "prompt": "Ensure Sidebar already filters by role (it does). Add tests to verify only accessible routes show for each role. Test that routes with 'no' access don't appear. Use TDD.",
+          "files": ["src/components/layout/Sidebar.tsx", "tests/components/Sidebar.test.tsx"],
+          "validation": "Sidebar correctly filters routes by role. Tests verify filtering. Tests pass."
+        },
+        {
+          "id": 17,
+          "task": "Implement access level UI indicators on protected routes with tests",
+          "prompt": "Add AccessBadge component to ProtectedRoute. Show 'Full Access', 'Partial Access', 'View Only' badges based on access level. Write tests for badge display. Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "tests/components/ProtectedRoute.test.tsx"],
+          "validation": "Access badges display correctly. Tests verify badge logic. Tests pass."
+        },
+        {
+          "id": 18,
+          "task": "Add redirect logic for unauthorized access with tests",
+          "prompt": "Update ProtectedRoute to redirect to /unauthorized when access is denied. Create src/pages/Unauthorized.tsx page. Write tests for redirect behavior. Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "src/pages/Unauthorized.tsx", "tests/components/ProtectedRoute.test.tsx"],
+          "validation": "Unauthorized redirects work. Unauthorized page exists. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Navigation & UX Integration",
+      "tasks": [
+        {
+          "id": 19,
+          "task": "Update Sidebar to use React Router Link components with tests",
+          "prompt": "Replace <a> tags in Sidebar with <Link> from react-router-dom. Ensure active state styling works with NavLink. Write tests for Link components. Use TDD.",
+          "files": ["src/components/layout/Sidebar.tsx", "tests/components/Sidebar.test.tsx"],
+          "validation": "Sidebar uses Link components. Active states work. Tests pass."
+        },
+        {
+          "id": 20,
+          "task": "Add active route highlighting in Sidebar with tests",
+          "prompt": "Use NavLink's activeClassName or isActive prop to highlight current route. Update styling to show active state. Write tests for active highlighting. Use TDD.",
+          "files": ["src/components/layout/Sidebar.tsx", "tests/components/Sidebar.test.tsx"],
+          "validation": "Active route highlighting works. Tests verify highlighting. Tests pass."
+        },
+        {
+          "id": 21,
+          "task": "Implement breadcrumb navigation with tests",
+          "prompt": "Create src/components/navigation/Breadcrumbs.tsx. Use useLocation to get current path. Parse path segments and create breadcrumb trail. Add to AuthenticatedLayout. Write tests. Use TDD.",
+          "files": ["src/components/navigation/Breadcrumbs.tsx", "src/components/layout/AuthenticatedLayout.tsx", "tests/components/Breadcrumbs.test.tsx"],
+          "validation": "Breadcrumbs display correctly. Tests verify breadcrumb generation. Tests pass."
+        },
+        {
+          "id": 22,
+          "task": "Add route transition animations with tests",
+          "prompt": "Add fade-in animation for route transitions. Use CSS transitions or framer-motion. Apply to route changes. Write tests for animation behavior. Use TDD.",
+          "files": ["src/components/routing/RouteTransition.tsx", "src/App.tsx", "tests/components/RouteTransition.test.tsx"],
+          "validation": "Route transitions animate smoothly. Tests verify animations. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 6,
+      "name": "Dashboard Integration",
+      "tasks": [
+        {
+          "id": 23,
+          "task": "Connect dashboard components to feature routes with tests",
+          "prompt": "Update all dashboard components (FarmersDashboard, RoastersDashboard, etc.) to use Link components pointing to feature routes. Replace placeholder buttons with actual navigation. Write tests. Use TDD.",
+          "files": ["src/components/dashboards/*.tsx", "tests/components/dashboards/*.test.tsx"],
+          "validation": "Dashboards link to features. Navigation works. Tests pass."
+        },
+        {
+          "id": 24,
+          "task": "Add feature quick-access cards in dashboards with tests",
+          "prompt": "Add quick-access cards to each dashboard showing key features. Cards should link to feature routes. Show access badges. Write tests. Use TDD.",
+          "files": ["src/components/dashboards/*.tsx", "tests/components/dashboards/*.test.tsx"],
+          "validation": "Quick-access cards exist. Link to features. Tests pass."
+        },
+        {
+          "id": 25,
+          "task": "Implement dashboard-to-feature navigation flow with tests",
+          "prompt": "Test complete flow: Dashboard → Click feature card → Navigate to feature → Verify access. Write integration tests. Use TDD.",
+          "files": ["tests/integration/dashboard-navigation.test.tsx"],
+          "validation": "Dashboard-to-feature flow works. Integration tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 7,
+      "name": "Error Handling & Edge Cases",
+      "tasks": [
+        {
+          "id": 26,
+          "task": "Add 404 Not Found route with tests",
+          "prompt": "Create src/pages/NotFound.tsx. Add catch-all route in App.tsx. Write tests for 404 handling. Use TDD.",
+          "files": ["src/pages/NotFound.tsx", "src/App.tsx", "tests/pages/NotFound.test.tsx"],
+          "validation": "404 page exists. Catch-all route works. Tests pass."
+        },
+        {
+          "id": 27,
+          "task": "Add unauthorized access error page with tests",
+          "prompt": "Enhance src/pages/Unauthorized.tsx with helpful message and link back to dashboard. Write tests. Use TDD.",
+          "files": ["src/pages/Unauthorized.tsx", "tests/pages/Unauthorized.test.tsx"],
+          "validation": "Unauthorized page is helpful. Tests pass."
+        },
+        {
+          "id": 28,
+          "task": "Handle role switching during navigation with tests",
+          "prompt": "Test scenario: User navigates to /analytics as farmer, switches role to affiliates (no access), should redirect. Write tests for role switching edge cases. Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "tests/integration/role-switching.test.tsx"],
+          "validation": "Role switching handled correctly. Redirects work. Tests pass."
+        },
+        {
+          "id": 29,
+          "task": "Add route loading states with tests",
+          "prompt": "Add Suspense boundaries for route loading. Create loading spinner component. Show during route transitions. Write tests. Use TDD.",
+          "files": ["src/components/ui/LoadingSpinner.tsx", "src/App.tsx", "tests/components/LoadingSpinner.test.tsx"],
+          "validation": "Loading states work. Suspense boundaries function. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 8,
+      "name": "Testing & Validation",
+      "tasks": [
+        {
+          "id": 30,
+          "task": "Write integration tests for complete routing flow",
+          "prompt": "Create comprehensive integration tests: Landing → Login → Dashboard → Feature navigation → Role switch → Access denied. Test complete user flows. Use TDD.",
+          "files": ["tests/integration/routing-flow.test.tsx"],
+          "validation": "Integration tests cover complete flows. All scenarios tested. Tests pass."
+        },
+        {
+          "id": 31,
+          "task": "Test RBAC protection on all routes",
+          "prompt": "Write tests that verify each route is protected correctly. Test all roles against all routes. Verify access levels match COMPONENT_REFERENCE.MD. Use TDD.",
+          "files": ["tests/integration/rbac-protection.test.tsx"],
+          "validation": "All routes protected. Access levels correct. Tests pass."
+        },
+        {
+          "id": 32,
+          "task": "Test role-based navigation visibility",
+          "prompt": "Write tests verifying Sidebar shows correct routes for each role. Test that 'no access' routes don't appear. Use TDD.",
+          "files": ["tests/integration/navigation-visibility.test.tsx"],
+          "validation": "Navigation visibility correct per role. Tests pass."
+        },
+        {
+          "id": 33,
+          "task": "Test access level restrictions in UI",
+          "prompt": "Write tests verifying UI restrictions for partial/view-only access. Test that edit buttons are disabled appropriately. Use TDD.",
+          "files": ["tests/integration/access-level-ui.test.tsx"],
+          "validation": "UI restrictions work correctly. Tests pass."
+        },
+        {
+          "id": 34,
+          "task": "Validate all routes are accessible to correct roles",
+          "prompt": "Create validation script that checks all routes against COMPONENT_REFERENCE.MD. Verify no routes are missing. Verify all roles have correct access. Run validation.",
+          "files": ["scripts/validate-routes.ts", "tests/validation/route-validation.test.ts"],
+          "validation": "All routes validated. Matches COMPONENT_REFERENCE.MD. Validation passes."
+        }
+      ]
+    }
+  ],
+  "executionRules": {
+    "tdd": true,
+    "testCoverage": ">90%",
+    "validation": "Each task must pass validation before proceeding",
+    "linting": "All code must pass linter checks",
+    "typeChecking": "TypeScript strict mode compliance required"
+  }
+}

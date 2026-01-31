@@ -3,18 +3,46 @@
  * Role-specific dashboard for Farmers
  */
 
-import React, { useState } from 'react';
-import { Tabs } from '../ui/Tabs';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { 
+  Tractor, 
+  Radio, 
+  BarChart3, 
+  CreditCard,
+  ArrowRight,
+} from 'lucide-react';
 
 export function FarmersDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
-
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'farm-management', label: 'Farm Management', icon: '🚜' },
-    { id: 'iot-devices', label: 'IoT Devices', icon: '📡' },
-    { id: 'analytics', label: 'Analytics', icon: '📈' },
-    { id: 'transactions', label: 'Transactions', icon: '💰' }
+  const quickAccessFeatures = [
+    {
+      title: 'Farm Management',
+      description: 'Manage your farms and operations',
+      path: '/farm-management',
+      icon: Tractor,
+      color: 'bg-green-500/10 text-green-600 dark:text-green-400',
+    },
+    {
+      title: 'IoT Devices',
+      description: 'Monitor and manage IoT devices',
+      path: '/iot-devices',
+      icon: Radio,
+      color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    },
+    {
+      title: 'Analytics',
+      description: 'View farm analytics and insights',
+      path: '/analytics',
+      icon: BarChart3,
+      color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+    },
+    {
+      title: 'Transactions',
+      description: 'View transaction history',
+      path: '/transactions',
+      icon: CreditCard,
+      color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400',
+    },
   ];
 
   return (
@@ -24,53 +52,46 @@ export function FarmersDashboard() {
         <p className="text-muted-foreground mt-2">Manage your farms, devices, and analytics</p>
       </div>
 
-      <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      {/* Metrics Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Farms</h3>
+          <p className="text-3xl font-bold text-primary">12</p>
+        </div>
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">Active Devices</h3>
+          <p className="text-3xl font-bold text-primary">48</p>
+        </div>
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month's Yield</h3>
+          <p className="text-3xl font-bold text-primary">2.4T</p>
+        </div>
+      </div>
 
-      <div className="mt-6">
-        {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Farms</h3>
-              <p className="text-3xl font-bold text-primary">12</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Active Devices</h3>
-              <p className="text-3xl font-bold text-primary">48</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month's Yield</h3>
-              <p className="text-3xl font-bold text-primary">2.4T</p>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'farm-management' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Farm Management</h3>
-            <p className="text-muted-foreground">Farm management tools and controls</p>
-          </div>
-        )}
-
-        {activeTab === 'iot-devices' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">IoT Devices</h3>
-            <p className="text-muted-foreground">Monitor and manage IoT devices</p>
-          </div>
-        )}
-
-        {activeTab === 'analytics' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Analytics</h3>
-            <p className="text-muted-foreground">View farm analytics and insights</p>
-          </div>
-        )}
-
-        {activeTab === 'transactions' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Transactions</h3>
-            <p className="text-muted-foreground">View transaction history</p>
-          </div>
-        )}
+      {/* Quick Access Features */}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-foreground mb-4">Quick Access</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {quickAccessFeatures.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <Link
+                key={feature.path}
+                to={feature.path}
+                className="bg-card border border-border p-6 rounded-lg shadow hover:shadow-lg transition-all hover:border-primary group"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-3 rounded-lg ${feature.color}`}>
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </div>
+                <h4 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h4>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );

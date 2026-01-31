@@ -66,12 +66,18 @@ export function PanoramicHero({ currentRole, onRoleSelect }: PanoramicHeroProps)
           <span className="text-xl font-semibold text-foreground">Aether Grounds</span>
         </div>
         <div className="flex items-center gap-4">
-          <Button variant="outline" className="bg-background/80 backdrop-blur-sm border-border">
-            <Wallet className="h-4 w-4 mr-2" />
-            Connect Wallet
+          <Button 
+            variant="outline" 
+            className="bg-background/80 backdrop-blur-sm border-border"
+            asChild
+          >
+            <a href="/login">Sign In</a>
           </Button>
-          <Button className="bg-green-600 hover:bg-green-700 text-white">
-            Request Access
+          <Button 
+            className="bg-green-600 hover:bg-green-700 text-white"
+            asChild
+          >
+            <a href="/register">Create Account</a>
           </Button>
         </div>
       </header>

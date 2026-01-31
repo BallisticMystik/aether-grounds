@@ -3,18 +3,46 @@
  * Role-specific dashboard for Retailers
  */
 
-import React, { useState } from 'react';
-import { Tabs } from '../ui/Tabs';
+import React from 'react';
+import { Link } from 'react-router-dom';
+import {
+  ShoppingBag,
+  Search,
+  BarChart3,
+  CreditCard,
+  ArrowRight,
+} from 'lucide-react';
 
 export function RetailersDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
-
-  const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
-    { id: 'shop-mint', label: 'Shop/Mint', icon: '🛒' },
-    { id: 'traceability', label: 'Traceability', icon: '🔍' },
-    { id: 'analytics', label: 'Analytics', icon: '📈' },
-    { id: 'transactions', label: 'Transactions', icon: '💰' }
+  const quickAccessFeatures = [
+    {
+      title: 'Shop/Mint',
+      description: 'Browse and manage products in the marketplace',
+      path: '/shop-mint',
+      icon: ShoppingBag,
+      color: 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400',
+    },
+    {
+      title: 'Traceability',
+      description: 'Track products from source to customer',
+      path: '/traceability',
+      icon: Search,
+      color: 'bg-blue-500/10 text-blue-600 dark:text-blue-400',
+    },
+    {
+      title: 'Analytics',
+      description: 'View sales analytics and performance metrics',
+      path: '/analytics',
+      icon: BarChart3,
+      color: 'bg-purple-500/10 text-purple-600 dark:text-purple-400',
+    },
+    {
+      title: 'Transactions',
+      description: 'View transaction history and payments',
+      path: '/transactions',
+      icon: CreditCard,
+      color: 'bg-orange-500/10 text-orange-600 dark:text-orange-400',
+    },
   ];
 
   return (
@@ -24,53 +52,46 @@ export function RetailersDashboard() {
         <p className="text-muted-foreground mt-2">Manage retail operations and sales</p>
       </div>
 
-      <Tabs tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
+      {/* Metrics Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Sales</h3>
+          <p className="text-3xl font-bold text-primary">$45.2K</p>
+        </div>
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">Products Listed</h3>
+          <p className="text-3xl font-bold text-primary">127</p>
+        </div>
+        <div className="bg-card border border-border p-6 rounded-lg shadow">
+          <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month Orders</h3>
+          <p className="text-3xl font-bold text-primary">342</p>
+        </div>
+      </div>
 
-      <div className="mt-6">
-        {activeTab === 'overview' && (
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Total Sales</h3>
-              <p className="text-3xl font-bold text-primary">$45.2K</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">Products Listed</h3>
-              <p className="text-3xl font-bold text-primary">127</p>
-            </div>
-            <div className="bg-card border border-border p-6 rounded-lg shadow">
-              <h3 className="text-lg font-semibold mb-2 text-card-foreground">This Month Orders</h3>
-              <p className="text-3xl font-bold text-primary">342</p>
-            </div>
-          </div>
-        )}
-
-        {activeTab === 'shop-mint' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Shop/Mint</h3>
-            <p className="text-muted-foreground">Browse and manage products in the marketplace</p>
-          </div>
-        )}
-
-        {activeTab === 'traceability' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Traceability</h3>
-            <p className="text-muted-foreground">Track products from source to customer</p>
-          </div>
-        )}
-
-        {activeTab === 'analytics' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Analytics</h3>
-            <p className="text-muted-foreground">View sales analytics and performance metrics</p>
-          </div>
-        )}
-
-        {activeTab === 'transactions' && (
-          <div className="bg-card border border-border p-6 rounded-lg shadow">
-            <h3 className="text-xl font-semibold mb-4 text-card-foreground">Transactions</h3>
-            <p className="text-muted-foreground">View transaction history and payments</p>
-          </div>
-        )}
+      {/* Quick Access Features */}
+      <div className="mb-6">
+        <h3 className="text-xl font-semibold text-foreground mb-4">Quick Access</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {quickAccessFeatures.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <Link
+                key={feature.path}
+                to={feature.path}
+                className="bg-card border border-border p-6 rounded-lg shadow hover:shadow-lg transition-all hover:border-primary group"
+              >
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`p-3 rounded-lg ${feature.color}`}>
+                    <Icon className="h-6 w-6" />
+                  </div>
+                  <ArrowRight className="h-5 w-5 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                </div>
+                <h4 className="text-lg font-semibold text-foreground mb-2">{feature.title}</h4>
+                <p className="text-sm text-muted-foreground">{feature.description}</p>
+              </Link>
+            );
+          })}
+        </div>
       </div>
     </div>
   );
