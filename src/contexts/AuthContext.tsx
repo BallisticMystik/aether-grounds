@@ -33,22 +33,57 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [token, setToken] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
-  // Load auth state from localStorage on mount
+  // Validate token and load auth state on mount
   useEffect(() => {
-    const storedToken = localStorage.getItem('auth_token');
-    const storedUser = localStorage.getItem('user');
+    const validateToken = async () => {
+      const storedToken = localStorage.getItem('auth_token');
+      const storedUser = localStorage.getItem('user');
 
-    if (storedToken && storedUser) {
-      try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
-      } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('auth_token');
-        localStorage.removeItem('user');
+      if (!storedToken || !storedUser) {
+        setLoading(false);
+        return;
       }
-    }
-    setLoading(false);
+
+      try {
+        // Validate token by calling /api/auth/me
+        const response = await fetch('/api/auth/me', {
+          headers: {
+            Authorization: `Bearer ${storedToken}`,
+          },
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Token is valid - use fresh user data from server
+          setToken(storedToken);
+          setUser(data.user);
+          // Update localStorage with fresh user data
+          localStorage.setItem('user', JSON.stringify(data.user));
+        } else {
+          // Token is invalid or expired - clear storage
+          console.warn('Stored token is invalid or expired');
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user');
+          setToken(null);
+          setUser(null);
+        }
+      } catch (error) {
+        // Network error - use stored data as fallback (offline support)
+        console.warn('Could not validate token (network error), using stored data:', error);
+        try {
+          setToken(storedToken);
+          setUser(JSON.parse(storedUser));
+        } catch (parseError) {
+          console.error('Failed to parse stored user:', parseError);
+          localStorage.removeItem('auth_token');
+          localStorage.removeItem('user');
+        }
+      }
+
+      setLoading(false);
+    };
+
+    validateToken();
   }, []);
 
   const login = async (email: string, password: string) => {
