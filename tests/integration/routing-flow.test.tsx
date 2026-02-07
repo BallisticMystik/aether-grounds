@@ -7,6 +7,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { RoleProvider } from '../../src/contexts/RoleContext';
+import { AuthProvider } from '../../src/contexts/AuthContext';
 import { AppContent } from '../../src/App';
 
 // Mock components
@@ -28,21 +29,34 @@ vi.mock('../../src/components/layout/AuthenticatedLayout', () => ({
   ),
 }));
 
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <AuthProvider>
+        <RoleProvider>{children}</RoleProvider>
+      </AuthProvider>
+    </MemoryRouter>
+  );
+}
+
 describe('Complete Routing Flow', () => {
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
+  });
+
   it('should navigate from landing to dashboard after role selection', async () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <RoleProvider>
-          <AppContent />
-        </RoleProvider>
-      </MemoryRouter>
+      <TestWrapper>
+        <AppContent />
+      </TestWrapper>
     );
 
-    // Should show landing page
+    await screen.findByTestId('landing-page');
     expect(screen.getByTestId('landing-page')).toBeInTheDocument();
-
-    // Select role (this would normally trigger navigation)
-    // In a real test, we'd simulate the click and wait for navigation
   });
 
   it('should show dashboard when authenticated', () => {

@@ -3,10 +3,12 @@
  * Tests for root application routing
  */
 
-import { describe, it, expect, vi } from 'vitest';
+import React from 'react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { RoleProvider } from '../src/contexts/RoleContext';
+import { AuthProvider } from '../src/contexts/AuthContext';
 
 // Mock the Landing and Dashboard components to avoid complex dependencies
 vi.mock('../src/pages/Landing', () => ({
@@ -30,55 +32,58 @@ vi.mock('../src/components/layout/AuthenticatedLayout', () => ({
   ),
 }));
 
-// Import AppContent directly to test without BrowserRouter wrapper
 import { AppContent } from '../src/App';
 
-// Export AppContent for testing
-vi.mock('../src/App', async () => {
-  const actual = await vi.importActual('../src/App');
-  return {
-    ...actual,
-    AppContent: (await import('../src/App')).AppContent,
-  };
-});
+// Ensure AuthProvider is available (no mock - use real one so useAuth works)
+function TestWrapper({ children }: { children: React.ReactNode }) {
+  return (
+    <MemoryRouter initialEntries={['/']}>
+      <AuthProvider>
+        <RoleProvider>{children}</RoleProvider>
+      </AuthProvider>
+    </MemoryRouter>
+  );
+}
 
 describe('App Routing', () => {
-  it('should render Landing page at root when not authenticated', () => {
+  beforeEach(() => {
+    vi.stubGlobal('localStorage', {
+      getItem: vi.fn(() => null),
+      setItem: vi.fn(),
+      removeItem: vi.fn(),
+    });
+  });
+
+  it('should render Landing page at root when not authenticated', async () => {
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <RoleProvider>
-          <AppContent />
-        </RoleProvider>
-      </MemoryRouter>
+      <TestWrapper>
+        <AppContent />
+      </TestWrapper>
     );
 
+    await screen.findByTestId('landing-page');
     expect(screen.getByTestId('landing-page')).toBeInTheDocument();
   });
 
-  it('should render authenticated layout when authenticated', () => {
-    // Mock authenticated state
-    const { rerender } = render(
-      <MemoryRouter initialEntries={['/']}>
-        <RoleProvider initialRole="farmers">
-          <AppContent />
-        </RoleProvider>
-      </MemoryRouter>
+  it('should render authenticated layout when authenticated', async () => {
+    render(
+      <TestWrapper>
+        <AppContent />
+      </TestWrapper>
     );
 
-    // Initially shows landing (not authenticated)
+    await screen.findByTestId('landing-page');
     expect(screen.getByTestId('landing-page')).toBeInTheDocument();
   });
 
-  it('should handle route structure', () => {
+  it('should handle route structure', async () => {
     const { container } = render(
-      <MemoryRouter initialEntries={['/']}>
-        <RoleProvider>
-          <AppContent />
-        </RoleProvider>
-      </MemoryRouter>
+      <TestWrapper>
+        <AppContent />
+      </TestWrapper>
     );
 
-    // App should render without errors
+    await screen.findByTestId('landing-page');
     expect(container).toBeTruthy();
   });
 });

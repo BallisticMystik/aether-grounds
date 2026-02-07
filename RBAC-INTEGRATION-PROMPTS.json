@@ -1,0 +1,249 @@
+{
+  "sidechain": "rbac-integration",
+  "description": "Complete RBAC backend integration: Parser, Core Logic, Backend Middleware, and Database connectivity",
+  "dependencies": ["PHYSICAL-INTEGRATION-PROMPTS.json"],
+  "phases": [
+    {
+      "phase": 1,
+      "name": "Parser Agent - XML Loader Service",
+      "description": "Complete XML parser testing, create loader service, and connect to frontend hooks",
+      "tasks": [
+        {
+          "id": 1,
+          "task": "Write comprehensive tests for XMLParser class",
+          "prompt": "Create tests/parsers/xml-parser.test.ts. Write comprehensive tests for src/parsers/xml-parser.ts including: parseFile success/error cases, parseString with valid/invalid/empty XML, transformToRBACConfig validation, all private methods (parseRoles, parseRoleFeatures, parseFeatureCatalog, etc.). Use coffee-platform-roles.xml as test fixture. Ensure >90% coverage. Use TDD.",
+          "files": ["tests/parsers/xml-parser.test.ts", "tests/fixtures/coffee-platform-roles.xml"],
+          "validation": "All parser tests pass. Edge cases covered. >90% coverage on XMLParser class."
+        },
+        {
+          "id": 2,
+          "task": "Create RBACLoaderService singleton",
+          "prompt": "Create src/services/RBACLoaderService.ts. Implement singleton pattern to load and cache RBAC config. Methods: getInstance(), loadConfig(path?), getConfig(), isLoaded(), reload(). Handle both server-side (file read) and client-side (fetch) loading. Write tests first in tests/services/RBACLoaderService.test.ts. Use TDD.",
+          "files": ["src/services/RBACLoaderService.ts", "tests/services/RBACLoaderService.test.ts"],
+          "validation": "RBACLoaderService singleton works. Caching works. Tests pass for both environments."
+        },
+        {
+          "id": 3,
+          "task": "Create config validator utility",
+          "prompt": "Create src/utils/configValidator.ts. Implement validateRBACConfig function that validates RBACConfig structure: required fields present, valid RoleIds, valid FeatureIds, valid AccessLevels, no duplicate IDs, all role features reference valid catalog features. Return ValidationResult with errors array. Write tests first. Use TDD.",
+          "files": ["src/utils/configValidator.ts", "tests/utils/configValidator.test.ts"],
+          "validation": "Config validation catches all invalid configs. Tests cover edge cases. Tests pass."
+        },
+        {
+          "id": 4,
+          "task": "Serve XML config via Express endpoint",
+          "prompt": "Add GET /api/rbac/config endpoint to src/server.ts. Serve coffee-platform-roles.xml as static file at /coffee-platform-roles.xml for frontend fetch. Add GET /api/rbac/config/parsed endpoint that returns parsed RBACConfig JSON. Use RBACLoaderService. Write tests. Use TDD.",
+          "files": ["src/server.ts", "tests/api/rbac-config.test.ts"],
+          "validation": "XML file served correctly. Parsed config endpoint works. Tests pass."
+        },
+        {
+          "id": 5,
+          "task": "Update useRBAC hook to use RBACLoaderService",
+          "prompt": "Refactor src/hooks/useRBAC.ts. Replace manual fetch logic with RBACLoaderService. Remove TODO comments. Ensure proper error handling when config fails to load. Add retry logic with exponential backoff. Remove fallback config in production (keep for development). Write tests. Use TDD.",
+          "files": ["src/hooks/useRBAC.ts", "tests/hooks/useRBAC.test.ts"],
+          "validation": "useRBAC uses RBACLoaderService. Error handling works. Retry logic works. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 2,
+      "name": "Core Logic Agent - RBAC Class Enhancement",
+      "description": "Enhance RBAC class with additional methods and integrate with frontend components",
+      "tasks": [
+        {
+          "id": 6,
+          "task": "Write comprehensive tests for RBAC class",
+          "prompt": "Create tests/types/rbac.test.ts. Write comprehensive tests for RBAC class in types/rbac.types.ts: constructor, hasAccess (all access levels), hasFullAccess, canWrite, canRead, getRoleFeatures, getFeatureRoles, getFeaturesByCategory. Test with real coffee-platform-roles.xml data. Cover edge cases: invalid roleId, invalid featureId, empty config. Use TDD.",
+          "files": ["tests/types/rbac.test.ts"],
+          "validation": "All RBAC class methods tested. Edge cases covered. Tests pass with real config data."
+        },
+        {
+          "id": 7,
+          "task": "Add bulk permission checking methods to RBAC class",
+          "prompt": "Enhance RBAC class in types/rbac.types.ts. Add methods: checkMultipleFeatures(roleId, featureIds[]) returns PermissionResult[], getAccessibleFeatures(roleId) returns FeatureId[], getRolesWithAccess(featureId, minAccessLevel) returns RoleId[]. Write tests first. Use TDD.",
+          "files": ["types/rbac.types.ts", "tests/types/rbac.test.ts"],
+          "validation": "Bulk methods work correctly. Tests pass. No breaking changes to existing methods."
+        },
+        {
+          "id": 8,
+          "task": "Create RBAC helper utilities",
+          "prompt": "Create src/utils/rbacHelpers.ts. Implement helper functions: isAccessLevelSufficient(current, required), getAccessLevelPriority(level), compareAccessLevels(a, b), formatAccessLevel(level) for display, getAccessLevelColor(level) for UI styling. Write tests. Use TDD.",
+          "files": ["src/utils/rbacHelpers.ts", "tests/utils/rbacHelpers.test.ts"],
+          "validation": "Helper functions work correctly. All access levels handled. Tests pass."
+        },
+        {
+          "id": 9,
+          "task": "Create useRBACHelpers hook",
+          "prompt": "Create src/hooks/useRBACHelpers.ts. Combine useRBAC with helper utilities. Provide convenient methods: checkAccess(featureId), canEdit(featureId), canView(featureId), getMyFeatures(), getMyFeaturesByCategory(categoryId). Memoize results. Write tests. Use TDD.",
+          "files": ["src/hooks/useRBACHelpers.ts", "tests/hooks/useRBACHelpers.test.ts"],
+          "validation": "Hook provides all convenience methods. Memoization works. Tests pass."
+        },
+        {
+          "id": 10,
+          "task": "Integrate RBAC with ProtectedRoute component",
+          "prompt": "Update src/components/routing/ProtectedRoute.tsx. Use useRBACHelpers instead of direct useRBAC. Show loading state while RBAC loads. Handle error state gracefully. Ensure accessLevel prop works with RBAC helper comparison. Update tests. Use TDD.",
+          "files": ["src/components/routing/ProtectedRoute.tsx", "tests/components/ProtectedRoute.test.tsx"],
+          "validation": "ProtectedRoute uses RBAC helpers. Loading/error states handled. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 3,
+      "name": "Backend Agent - Express RBAC Middleware",
+      "description": "Implement Express middleware for server-side RBAC enforcement",
+      "tasks": [
+        {
+          "id": 11,
+          "task": "Create RBAC middleware factory",
+          "prompt": "Create src/middleware/rbacMiddleware.ts. Implement middleware factory: requireFeature(featureId, minAccessLevel?) returns Express middleware. Middleware should: extract user role from JWT, check RBAC permissions, return 403 if denied, attach permission result to request. Write tests first. Use TDD.",
+          "files": ["src/middleware/rbacMiddleware.ts", "tests/middleware/rbacMiddleware.test.ts"],
+          "validation": "Middleware correctly enforces permissions. 403 returned for denied access. Tests pass."
+        },
+        {
+          "id": 12,
+          "task": "Create authentication middleware",
+          "prompt": "Create src/middleware/authMiddleware.ts. Implement requireAuth middleware: extract JWT from Authorization header, verify token, attach user (id, email, roleId) to request, return 401 if invalid/missing. Add optionalAuth middleware that doesn't fail if no token. Write tests. Use TDD.",
+          "files": ["src/middleware/authMiddleware.ts", "tests/middleware/authMiddleware.test.ts"],
+          "validation": "Auth middleware verifies JWT correctly. User attached to request. Tests pass."
+        },
+        {
+          "id": 13,
+          "task": "Create RBAC service for backend",
+          "prompt": "Create src/services/RBACService.ts. Backend singleton that uses RBACLoaderService. Methods: checkPermission(roleId, featureId), enforcePermission(roleId, featureId) throws if denied, getPermissionsForRole(roleId), isFeatureAccessible(roleId, featureId, minLevel). Initialize on server startup. Write tests. Use TDD.",
+          "files": ["src/services/RBACService.ts", "tests/services/RBACService.test.ts"],
+          "validation": "RBACService works correctly. Singleton pattern correct. Tests pass."
+        },
+        {
+          "id": 14,
+          "task": "Add RBAC API endpoints",
+          "prompt": "Create src/api/rbac.ts Express router. Endpoints: GET /api/rbac/permissions (current user's permissions), GET /api/rbac/features/:featureId/check (check specific feature), GET /api/rbac/roles (list all roles), GET /api/rbac/roles/:roleId/features (role's features). Protect with authMiddleware. Write tests. Use TDD.",
+          "files": ["src/api/rbac.ts", "tests/api/rbac.test.ts"],
+          "validation": "All RBAC endpoints work. Proper authentication required. Tests pass."
+        },
+        {
+          "id": 15,
+          "task": "Integrate RBAC middleware with server",
+          "prompt": "Update src/server.ts. Import and use rbacRouter at /api/rbac. Initialize RBACService on startup. Add example protected endpoints for each feature category using requireFeature middleware. Update tests. Use TDD.",
+          "files": ["src/server.ts", "tests/server.test.ts"],
+          "validation": "Server uses RBAC middleware. Protected endpoints work. Tests pass."
+        },
+        {
+          "id": 16,
+          "task": "Create permission decorators for controllers",
+          "prompt": "Create src/decorators/rbacDecorators.ts. Implement decorators: @RequireFeature(featureId, minAccessLevel?), @RequireRole(roleId), @RequireAuth. Decorators work with class methods. Write tests using test controller class. Use TDD.",
+          "files": ["src/decorators/rbacDecorators.ts", "tests/decorators/rbacDecorators.test.ts"],
+          "validation": "Decorators correctly enforce permissions. Work with Express route handlers. Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 4,
+      "name": "Database Agent - User & Role Persistence",
+      "description": "Connect database, implement user/role persistence, and session management",
+      "tasks": [
+        {
+          "id": 17,
+          "task": "Review and enhance database schema",
+          "prompt": "Review src/db/schema.sql. Ensure tables exist: users (id, email, password_hash, role_id, created_at, updated_at), user_sessions (id, user_id, token, expires_at, created_at), user_role_history (id, user_id, old_role, new_role, changed_at, reason). Add missing tables if needed. Add indexes for performance. Write migration tests. Use TDD.",
+          "files": ["src/db/schema.sql", "tests/db/schema.test.ts"],
+          "validation": "Schema has all required tables. Indexes added. Migration tests pass."
+        },
+        {
+          "id": 18,
+          "task": "Create User repository",
+          "prompt": "Create src/repositories/UserRepository.ts. Implement: findById(id), findByEmail(email), create(userData), update(id, data), delete(id), updateRole(id, roleId, reason?), getRoleHistory(id). Use pool from db/connection.ts. Handle null pool gracefully. Write tests with test database or mocks. Use TDD.",
+          "files": ["src/repositories/UserRepository.ts", "tests/repositories/UserRepository.test.ts"],
+          "validation": "All repository methods work. Handles missing database gracefully. Tests pass."
+        },
+        {
+          "id": 19,
+          "task": "Create Session repository",
+          "prompt": "Create src/repositories/SessionRepository.ts. Implement: create(userId, token, expiresAt), findByToken(token), invalidate(token), invalidateAllForUser(userId), cleanupExpired(). Write tests. Use TDD.",
+          "files": ["src/repositories/SessionRepository.ts", "tests/repositories/SessionRepository.test.ts"],
+          "validation": "Session management works. Expired sessions cleaned up. Tests pass."
+        },
+        {
+          "id": 20,
+          "task": "Refactor auth API to use repositories",
+          "prompt": "Update src/api/auth.ts. Replace inline SQL queries with UserRepository and SessionRepository. Add logout endpoint that invalidates session. Add token refresh endpoint. Add change-role endpoint (with role history). Ensure all auth routes work without database (mock mode). Update tests. Use TDD.",
+          "files": ["src/api/auth.ts", "tests/api/auth.test.ts"],
+          "validation": "Auth API uses repositories. All endpoints work. Mock mode works. Tests pass."
+        },
+        {
+          "id": 21,
+          "task": "Create database health check and auto-reconnect",
+          "prompt": "Enhance src/db/connection.ts. Add healthCheck() function that tests connection. Add auto-reconnect logic with exponential backoff. Add connection pool events logging. Create /api/health/db endpoint. Write tests. Use TDD.",
+          "files": ["src/db/connection.ts", "src/server.ts", "tests/db/connection.test.ts"],
+          "validation": "Health check works. Auto-reconnect works. Pool events logged. Tests pass."
+        },
+        {
+          "id": 22,
+          "task": "Create database seeder for roles",
+          "prompt": "Create src/db/seeds/roles.ts. Seed script that inserts default roles from coffee-platform-roles.xml into database (if using database-stored roles). Add seed:roles npm script. Add rollback capability. Write tests. Use TDD.",
+          "files": ["src/db/seeds/roles.ts", "package.json", "tests/db/seeds/roles.test.ts"],
+          "validation": "Seeder creates roles correctly. Idempotent (safe to run multiple times). Tests pass."
+        }
+      ]
+    },
+    {
+      "phase": 5,
+      "name": "Integration & End-to-End Testing",
+      "description": "Verify complete RBAC flow from frontend to database",
+      "tasks": [
+        {
+          "id": 23,
+          "task": "Write frontend-to-backend integration tests",
+          "prompt": "Create tests/integration/rbac-flow.test.ts. Test complete flow: 1) User registers, 2) User logs in, 3) Frontend fetches RBAC config, 4) User navigates to protected route, 5) Frontend checks permission, 6) API call with JWT, 7) Backend verifies permission, 8) Response returned. Test all roles. Use TDD.",
+          "files": ["tests/integration/rbac-flow.test.ts"],
+          "validation": "Complete RBAC flow works. All roles tested. Tests pass."
+        },
+        {
+          "id": 24,
+          "task": "Write permission enforcement E2E tests",
+          "prompt": "Create tests/e2e/permission-enforcement.test.ts. Test that: 1) Users can only access features their role allows, 2) Access level restrictions work (view-only can't edit), 3) Role switching updates permissions immediately, 4) API returns 403 for unauthorized feature access. Use Playwright or similar. Use TDD.",
+          "files": ["tests/e2e/permission-enforcement.test.ts"],
+          "validation": "E2E tests verify permission enforcement. All access levels tested. Tests pass."
+        },
+        {
+          "id": 25,
+          "task": "Create RBAC audit logging",
+          "prompt": "Create src/services/AuditService.ts. Log all permission checks: timestamp, userId, roleId, featureId, accessLevel, allowed, ipAddress. Store in database table audit_log. Add GET /api/audit endpoint for admins. Write tests. Use TDD.",
+          "files": ["src/services/AuditService.ts", "src/db/schema.sql", "tests/services/AuditService.test.ts"],
+          "validation": "Audit logging works. Logs stored in database. Admin endpoint works. Tests pass."
+        },
+        {
+          "id": 26,
+          "task": "Performance test RBAC operations",
+          "prompt": "Create tests/performance/rbac-performance.test.ts. Benchmark: 1) XML parsing time, 2) Permission check time (single), 3) Bulk permission check time, 4) Database query time for user/role. Ensure single permission check < 1ms, bulk < 10ms. Write performance tests. Use TDD.",
+          "files": ["tests/performance/rbac-performance.test.ts"],
+          "validation": "Performance benchmarks pass. RBAC operations are fast enough. Results documented."
+        },
+        {
+          "id": 27,
+          "task": "Update INTEGRATION-STATUS.md with completion status",
+          "prompt": "Update INTEGRATION-STATUS.md. Mark all completed items as ✅. Update percentages. Document any remaining issues or known limitations. Add section for 'How to test RBAC integration'. Verify all claims in the document match actual implementation.",
+          "files": ["INTEGRATION-STATUS.md"],
+          "validation": "Status document reflects actual state. All claims verified. Testing instructions work."
+        }
+      ]
+    }
+  ],
+  "executionRules": {
+    "tdd": true,
+    "testCoverage": ">80%",
+    "validation": "Each task must pass validation before proceeding",
+    "linting": "All code must pass linter checks",
+    "typeChecking": "TypeScript strict mode compliance required",
+    "noBreakingChanges": "Existing frontend functionality must continue working"
+  },
+  "successCriteria": [
+    "XML parser fully tested with >90% coverage",
+    "RBACLoaderService provides config to frontend and backend",
+    "useRBAC hook loads real config (not fallback) in production",
+    "Express middleware enforces permissions on all protected endpoints",
+    "Database stores users with roles and tracks role changes",
+    "Complete E2E flow works: register → login → access feature → permission check",
+    "All tests pass with >80% overall coverage",
+    "No console errors or warnings in production mode"
+  ]
+}

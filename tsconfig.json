@@ -14,7 +14,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "outDir": "./dist",
-    "rootDir": "./src",
+    // Allow src, tests, and remotion to all be treated as source roots
+    "rootDir": ".",
     "types": ["node", "vitest/globals"],
     "jsx": "react-jsx",
     "baseUrl": ".",
@@ -25,6 +26,7 @@
   "include": [
     "src/**/*",
     "tests/**/*",
+    "remotion/**/*",
     "index.html"
   ],
   "exclude": [

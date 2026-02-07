@@ -1,2 +1,1 @@
-// Middleware module
-export {};
+export { createRbacMiddleware, type RbacRequest } from './express-rbac';

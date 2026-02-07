@@ -66,21 +66,19 @@ All feature components created and integrated:
 
 ## ⚠️ **PARTIALLY INTEGRATED / NEEDS WORK**
 
-### 1. **RBAC Core Integration** ⚠️
-- ⚠️ `useRBAC` hook exists but uses fallback config
-- ⚠️ XML parser exists but not fully connected
-- ⚠️ RBAC class from `types/rbac.types.ts` needs implementation
-- ⚠️ Need to load actual XML config in production
+### 1. **RBAC Core Integration** ✅ (updated)
+- ✅ `useRBAC` loads config from `/api/rbac/config` (and fallback)
+- ✅ XML parser (`src/parsers/xml-parser.ts`) and loader service connected
+- ✅ RBAC class in `types/rbac.types.ts` with unit tests (`tests/unit/core/rbac.test.ts`)
+- ✅ RBAC config loaded at server startup from `coffee-platform-roles.xml`
 
-**Status**: Hooks are ready, but backend RBAC implementation is pending
+**Status**: Backend RBAC and parser are in place; frontend can use real config.
 
-### 2. **Backend Integration** ⚠️
-- ⚠️ Express server exists (`src/server.ts`)
-- ⚠️ No RBAC middleware connected yet
-- ⚠️ No API endpoints for RBAC checks
-- ⚠️ No authentication API connected
-
-**Status**: Server structure ready, needs RBAC middleware integration
+### 2. **Backend Integration** ✅ (updated)
+- ✅ Express server (`src/server.ts`) loads RBAC config on startup
+- ✅ Express RBAC middleware (`src/middleware/express-rbac.ts`) – `createRbacMiddleware(featureId, minAccessLevel?)`
+- ✅ API endpoints: `/api/rbac/config`, `/api/rbac/check/:roleId/:featureId`, `/api/rbac/protected-demo` (auth + RBAC)
+- ✅ Auth API exists (`/api/auth/login`, register, `/api/auth/me` with JWT)
 
 ### 3. **Database Integration** ⚠️
 - ⚠️ Database schema exists (`src/db/schema.sql`)
@@ -92,82 +90,53 @@ All feature components created and integrated:
 
 ## ❌ **NOT YET INTEGRATED**
 
-### 1. **Parser Agent Tasks** ❌
-- ❌ XML parser fully tested
-- ❌ XML loader service
-- ❌ Config validator
+### 1. **Parser / Core / Backend (done)** ✅
+- ✅ XML parser and tests
+- ✅ RBACLoaderService (singleton), config validator
+- ✅ RBAC class and unit tests
+- ✅ Express RBAC middleware and protected-demo route
 
-**Blocked by**: Parser Agent - Task 1 not started
+### 2. **Remaining Backend / Tooling** ⚠️
+- ⚠️ Permission decorators (optional)
+- ⚠️ Config generator / CLI (optional)
+- ⚠️ Full API documentation
 
-### 2. **Core Logic Agent Tasks** ❌
-- ❌ RBAC core class implementation
-- ❌ Config validator
-- ❌ Permission checking logic
+### 3. **Frontend Agent Tasks** ✅
+- ✅ `useRBAC` loads from API and uses RBAC instance
+- ✅ `useFeatureAccess` – COMPLETE
+- ✅ `ProtectedRoute` – COMPLETE
+- ✅ Feature components and dashboards
 
-**Blocked by**: Parser Agent completion
-
-### 3. **Backend Agent Tasks** ❌
-- ❌ Express RBAC middleware
-- ❌ Permission decorators
-- ❌ RBAC service singleton
-- ❌ XML loader service
-
-**Blocked by**: Core Logic Agent completion
-
-### 4. **Frontend Agent Tasks** ❌
-- ⚠️ `useRBAC` exists but needs full RBAC instance
-- ⚠️ `useFeatureAccess` exists but needs full RBAC
-- ✅ `ProtectedRoute` - COMPLETE
-- ✅ `FeatureGate` - Likely exists (need to check)
-
-**Status**: Frontend components mostly done, waiting on backend RBAC
+**Status**: Frontend and backend RBAC are connected; permission checking uses real config when API is available.
 
 ## 📊 **Integration Summary**
 
-### Completed: ~70%
+### Completed: ~90%
 - ✅ Frontend architecture: 100%
 - ✅ Component structure: 100%
 - ✅ Routing & protection: 100%
 - ✅ UI components: 100%
-- ⚠️ RBAC integration: 50% (hooks exist, backend pending)
-- ❌ Backend RBAC: 0%
-- ❌ Database: 0%
+- ✅ RBAC integration: 90% (hooks + API config + RBAC class)
+- ✅ Backend RBAC: 100% (parser, loader, middleware, API, startup load)
+- ⚠️ Database: 0% (schema exists; optional for auth)
 
-### Next Steps (Priority Order)
+### Next Steps (Optional)
 
-1. **HIGH PRIORITY**: Complete Parser Agent - Task 1
-   - XML parser implementation
-   - Load XML config properly
-   - Connect to `useRBAC` hook
-
-2. **HIGH PRIORITY**: Complete Core Logic Agent - Task 1
-   - Implement RBAC class
-   - Connect to frontend hooks
-   - Enable permission checking
-
-3. **MEDIUM PRIORITY**: Complete Backend Agent tasks
-   - Express middleware
-   - API endpoints
-   - Connect to frontend
-
-4. **LOW PRIORITY**: Database integration
-   - Connect to database
-   - User/role persistence
-   - Session management
+1. **Database**: Connect DB for user/role persistence and real auth.
+2. **Tooling**: Config generator, CLI, decorators if needed.
+3. **Docs**: API documentation and migration guide.
 
 ## 🎯 **Current State**
 
 **What Works:**
-- ✅ Frontend UI structure
-- ✅ Role-based navigation
-- ✅ Component routing
-- ✅ Protected routes (structure)
-- ✅ All feature components exist
+- ✅ Frontend UI structure and role-based navigation
+- ✅ Permission checking via `useRBAC` / `useFeatureAccess` (uses `/api/rbac/config` or fallback)
+- ✅ Backend: RBAC config loaded at startup, `/api/rbac/*` endpoints, Express RBAC middleware
+- ✅ Protected API route example: `GET /api/rbac/protected-demo` (auth + profile access)
+- ✅ All feature components and dashboards
 
 **What Doesn't Work Yet:**
-- ❌ Actual permission checking (uses fallback)
-- ❌ Backend API integration
-- ❌ Database persistence
-- ❌ Real authentication flow
+- ❌ Database persistence (auth uses JWT; DB optional)
+- ❌ Real auth flow end-to-end if DB not connected
 
-**Bottom Line**: The frontend is **fully structured and ready**, but needs the **backend RBAC implementation** to be fully functional. The architecture is solid - we just need to complete the RBAC core and connect it.
+**Bottom Line**: RBAC framework is **implemented end-to-end** (parser → RBAC class → loader → API → middleware). Frontend uses real config when server is running; run tests with `bun run test` (Vitest).
